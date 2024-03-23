@@ -26,12 +26,13 @@ CREATE TABLE `收银记录` (
   `时间` time NOT NULL,
   `金额` float NOT NULL,
   `支付方式` varchar(16) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `流水号` int DEFAULT NULL,
   PRIMARY KEY (`来客_日期`,`来客_编号`,`时间`),
   CONSTRAINT `收银记录_ibfk_1` FOREIGN KEY (`来客_日期`, `来客_编号`) REFERENCES `来客` (`日期`, `编号`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `收银记录` */
+
+insert  into `收银记录`(`来客_日期`,`来客_编号`,`时间`,`金额`,`支付方式`) values ('2024-03-23',1,'11:20:48',16,'微信支付');
 
 /*Table structure for table `来客` */
 
@@ -52,7 +53,7 @@ CREATE TABLE `来客` (
 
 /*Data for the table `来客` */
 
-insert  into `来客`(`日期`,`编号`,`人数`,`座位数要求`,`排队时间`,`入座时间`,`桌号`) values ('2024-03-17',1,2,2,'00:36:00',NULL,NULL),('2024-03-17',2,2,2,'00:37:09',NULL,NULL),('2024-03-17',3,3,4,'00:37:59',NULL,NULL),('2024-03-18',1,2,8,'00:46:20',NULL,NULL),('2024-03-22',1,3,4,'15:28:41','15:41:59','A1');
+insert  into `来客`(`日期`,`编号`,`人数`,`座位数要求`,`排队时间`,`入座时间`,`桌号`) values ('2024-03-17',1,2,2,'00:36:00',NULL,NULL),('2024-03-17',2,2,2,'00:37:09',NULL,NULL),('2024-03-17',3,3,4,'00:37:59',NULL,NULL),('2024-03-18',1,2,8,'00:46:20',NULL,NULL),('2024-03-22',1,3,4,'15:28:41','15:41:59','A1'),('2024-03-23',1,2,2,'11:18:48','11:19:09','A1');
 
 /*Table structure for table `点菜记录` */
 
@@ -66,7 +67,7 @@ CREATE TABLE `点菜记录` (
   `菜名` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `时间` time NOT NULL,
   `状态` varchar(5) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  PRIMARY KEY (`来客_日期`,`桌号`,`客户点菜编号`),
+  PRIMARY KEY (`来客_日期`,`客户点菜编号`),
   KEY `来客_日期` (`来客_日期`,`来客_编号`),
   KEY `菜名` (`菜名`),
   CONSTRAINT `点菜记录_ibfk_1` FOREIGN KEY (`来客_日期`, `来客_编号`) REFERENCES `来客` (`日期`, `编号`) ON UPDATE CASCADE,
@@ -75,7 +76,7 @@ CREATE TABLE `点菜记录` (
 
 /*Data for the table `点菜记录` */
 
-insert  into `点菜记录`(`来客_日期`,`桌号`,`客户点菜编号`,`来客_编号`,`菜名`,`时间`,`状态`) values ('2024-03-22','A1',1,1,'土豆丝','15:50:53','未上菜');
+insert  into `点菜记录`(`来客_日期`,`桌号`,`客户点菜编号`,`来客_编号`,`菜名`,`时间`,`状态`) values ('2024-03-22','A1',1,1,'土豆丝','15:50:53','已上菜'),('2024-03-23','A1',1,1,'土豆丝','11:19:54','已上菜');
 
 /*Table structure for table `菜品` */
 
@@ -107,7 +108,7 @@ CREATE TABLE `餐桌` (
 
 /*Data for the table `餐桌` */
 
-insert  into `餐桌`(`桌号`,`容量`,`状态`) values ('A1',8,'忙碌'),('A2',8,'空闲'),('A3',8,'空闲'),('A4',8,'空闲'),('B1',4,'空闲'),('B2',4,'空闲'),('B3',4,'空闲'),('B4',4,'空闲'),('B5',2,'空闲'),('C1',2,'空闲'),('C2',2,'空闲'),('C3',2,'空闲'),('C4',2,'空闲'),('C5',2,'空闲'),('C6',2,'空闲');
+insert  into `餐桌`(`桌号`,`容量`,`状态`) values ('A1',8,'空闲'),('A2',8,'空闲'),('A3',8,'空闲'),('A4',8,'空闲'),('B1',4,'空闲'),('B2',4,'空闲'),('B3',4,'空闲'),('B4',4,'空闲'),('B5',2,'空闲'),('C1',2,'空闲'),('C2',2,'空闲'),('C3',2,'空闲'),('C4',2,'空闲'),('C5',2,'空闲'),('C6',2,'空闲');
 
 /* Trigger structure for table `来客` */
 
@@ -137,7 +138,7 @@ DELIMITER $$
 	IN _点菜编号 INT
 )
 BEGIN
-	update 点菜记录 set 点菜记录.`状态` = '已上菜' where 点菜记录.`客户点菜编号` = _点菜编号;
+	UPDATE 点菜记录 SET 点菜记录.`状态` = '已上菜' WHERE 点菜记录.`客户点菜编号` = _点菜编号 and 点菜记录.`来客_日期` = curdate();
 END */$$
 DELIMITER ;
 
@@ -207,6 +208,28 @@ BEGIN
 	SELECT 编号 INTO _来客编号 FROM 来客 WHERE 入座时间 = (SELECT MAX(入座时间) FROM 来客 INNER JOIN 餐桌 ON 来客.`桌号` = 餐桌.`桌号` AND 来客.`日期` = CURDATE());
 	INSERT INTO 点菜记录
 	VALUES (CURDATE(), _桌号, 客户已点菜编号, _来客编号,_菜名,CURTIME(),'未上菜');
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `结账` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `结账` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `结账`(
+	IN _桌号 CHAR(5),
+	IN 支付方式 VARCHAR(5)
+)
+BEGIN
+	DECLARE 应付金额 FLOAT;
+	DECLARE 当前客户编号 INT;
+	UPDATE 餐桌 SET 餐桌.`状态` = '空闲' WHERE 餐桌.`桌号` = _桌号;
+	SELECT 来客.`编号` INTO 当前客户编号 FROM 来客 WHERE 来客.`入座时间` = (SELECT MAX(入座时间) FROM 来客 WHERE 来客.`桌号` = _桌号);
+	select SUM(价格*折扣) INTO 应付金额 FROM 菜品 WHERE 菜名 = (
+		Select 菜名 FROM 点菜记录 WHere 桌号 = _桌号 AND 来客_日期 = CURdate() AND 来客_编号 = 当前客户编号 AND 状态 = '已上菜');
+	insert 收银记录
+	Values (CURdate(),当前客户编号,CURtime(),应付金额,支付方式);
 END */$$
 DELIMITER ;
 
