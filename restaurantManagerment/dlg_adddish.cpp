@@ -38,7 +38,7 @@ void Dlg_addDish::on_pushButton_clicked()
         ptr->addDish(info);
     }
     else{
-        ptr ->updateDish(info);
+        ptr ->updateDish(info,m_info.name);
     }
     QMessageBox::information(nullptr,"信息","存储成功");
     this->hide(); //隐藏添加菜品界面

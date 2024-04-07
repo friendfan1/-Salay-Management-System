@@ -56,9 +56,9 @@ public:
     //2.增加研制的新菜品
     bool addDish(dishInfo info);
     //3.删除不方便供应旧菜品
-    bool delDish(int id);
+    bool delDish(QString name);
     //4.修改现有菜品信息
-    void updateDish(dishInfo info);//NOW UPDATED
+    void updateDish(dishInfo info,QString _name);//NOW UPDATED
 
     //用户函数
     //用户注册（添加用户）
@@ -70,7 +70,7 @@ public:
     //2.增加餐桌
     bool addTable(tableInfo info);
     //3.修改餐桌
-    void updateTable(tableInfo info);
+    void updateTable(tableInfo info, QString id);
     //4.删除不方便供应旧菜品
      bool delTable(QString id);
     //5.获取空闲餐桌

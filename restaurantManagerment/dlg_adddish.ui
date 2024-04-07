@@ -13,24 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>50</y>
-     <width>69</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>编号</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
@@ -101,16 +83,6 @@
    </property>
    <property name="text">
     <string>价格</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="le_id">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>50</y>
-     <width>181</width>
-     <height>21</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLineEdit" name="le_name">

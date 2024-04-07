@@ -181,9 +181,9 @@ void MainWindow::on_btn_delDish_clicked()
     qDebug()<<i;
     if(i >= 0){
         //int id = ui->tableWidget->item(i,1)->text().toUInt(); //有问题 无法正常获取id
-        int id=i+1;
-        qDebug()<<id;
-        m_ptrmenusql->delDish(id); //直接用行号代替了id  要求id务必和行号相同
+        QString name=ui->tableWidget->item(i,0)->text();
+        qDebug()<<name;
+        m_ptrmenusql->delDish(name); //直接用行号代替了id  要求id务必和行号相同
         updateTable();
         QMessageBox::information(nullptr,"信息","删除成功");
     }
@@ -195,11 +195,11 @@ void MainWindow::on_btn_updDish_clicked()
     dishInfo info;
     int i = ui->tableWidget->currentRow();
     if(i>=0){
-        //info.id = ui->tableWidget->item(i,0)->text().toUInt();
-        info.name = ui->tableWidget->item(i,1)->text();
-        info.type = ui->tableWidget->item(i,2)->text();
+        info.name = ui->tableWidget->item(i,0)->text();
+        info.type = ui->tableWidget->item(i,4)->text();
         info.material = ui->tableWidget->item(i,3)->text();
-        info.price = ui->tableWidget->item(i,4)->text().toUInt();
+        info.price = ui->tableWidget->item(i,1)->text().toFloat();
+        info.discount=ui->tableWidget->item(i,2)->text().toFloat();
         m_dlgAdddish.setType(false,info);
         m_dlgAdddish.exec();
         updateTable();
@@ -297,13 +297,14 @@ void MainWindow::on_btn_search_clicked()
         if(!ldishes[i].name.contains(strFiter)){
             continue;
         }
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(ldishes[i].name));
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(ldishes[i].discount)));
-        ui->tableWidget->setItem(i,3,new QTableWidgetItem(ldishes[i].material ));
-        ui->tableWidget->setItem(i,4,new QTableWidgetItem(ldishes[i].type));
+        ui->tableWidget->setItem(index,0,new QTableWidgetItem(ldishes[i].name));
+        ui->tableWidget->setItem(index,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
+        ui->tableWidget->setItem(index,2,new QTableWidgetItem(QString::number(ldishes[i].discount)));
+        ui->tableWidget->setItem(index,3,new QTableWidgetItem(ldishes[i].material ));
+        ui->tableWidget->setItem(index,4,new QTableWidgetItem(ldishes[i].type));
         index++;
     }
+    for(int i=index;i<ldishes.size();++i)ui->tableWidget->removeRow(index);
 }
 
 
@@ -331,7 +332,7 @@ void MainWindow::on_btn_search2_clicked()
         ui->tableWidget_2->setItem(index,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
         ui->tableWidget_2->setItem(index,2,new QTableWidgetItem(ltables[i].status ));
         index++;
-    }
+    }for(int i=index;i<ltables.size();++i)ui ->tableWidget_2 ->removeRow(index);
 }
 
 
@@ -368,4 +369,16 @@ void MainWindow::on_btn_cancel_order_clicked()
     }
 }
 
+
+
+void MainWindow::on_btn_menu_refresh_clicked()
+{
+    updateTable();
+}
+
+
+void MainWindow::on_btn_table_refresh_clicked()
+{
+    updateTable2();
+}
 
