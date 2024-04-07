@@ -4,12 +4,11 @@
 #include <QObject>
 #include<QSqlDatabase>
 struct dishInfo{
-    int id;
-    QString name;
-    QString type;
-    QString material;
-    float price;
-    float discount;
+    QString name;//菜名
+    float price;//价格
+    float discount;//折扣
+    QString material;//材料
+    QString type;//类型
 };
 struct userInfo{
     QString account;
@@ -46,22 +45,20 @@ public:
     static menusql *getinstance(){
         if(nullptr == ptrmenuSql){
             ptrmenuSql = new menusql;
+            ptrmenuSql->init();
         }
         return ptrmenuSql;
     }
-    explicit menusql(QObject *parent = nullptr);
-    //初始化数据库
-    void init();
 
     //菜品函数
-    //1.查看现有菜品信息
+    //1.查看现有菜品信息s
     QList<dishInfo> getAllDish();
     //2.增加研制的新菜品
     bool addDish(dishInfo info);
     //3.删除不方便供应旧菜品
     bool delDish(int id);
     //4.修改现有菜品信息
-    void updateDish(dishInfo info);
+    void updateDish(dishInfo info);//NOW UPDATED
 
     //用户函数
     //用户注册（添加用户）
@@ -101,6 +98,9 @@ public:
 
 signals:
 private:
+    //单例模式，构造函数私有化
+    void init();
+    explicit menusql(QObject *parent = nullptr);
     QSqlDatabase m_db;  //声明QSqlDatabase的成员变量
 };
 

@@ -3,6 +3,7 @@
 #include "menusql.h"
 #include<QMessageBox>
 #include<QSqlQuery> //sql查询语句
+#include<QSqlError>
 Page_Login::Page_Login(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Page_Login)
@@ -17,6 +18,7 @@ Page_Login::~Page_Login()
 
 void Page_Login::on_btn_login_clicked()
 {
+    menusql::getinstance();
     //获取输入信息
     userInfo info;
     //auto ptr = menusql::getinstance();
@@ -24,12 +26,12 @@ void Page_Login::on_btn_login_clicked()
     info.password = ui->le_password->text();
     //数据库查找用户名和密码
     QSqlQuery query;
-    QString strSql = QString("select * from user where account = '%1' and password = '%2'").
+    QString strSql = QString("select * from 账户 where 账号 = '%1' and 密码 = '%2'").
             arg(info.account).
             arg(info.password);
     //失败则提示
     if(!query.exec(strSql)){
-        qDebug()<<query.exec(strSql);
+        qDebug()<<query.lastError().text();
         return;
     }
 

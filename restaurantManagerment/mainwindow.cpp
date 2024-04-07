@@ -4,7 +4,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    ,m_ptrmenusql(nullptr)
 {
     ui->setupUi(this);
     m_dlgLogin.show(); //阻塞一下
@@ -54,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->treeWidget->expandAll(); //默认展开目录
 
     m_ptrmenusql = menusql::getinstance();
-    m_ptrmenusql->init();
 
 //    //显示表格内容
 //    QList<dishInfo> ldishes = m_ptrmenusql->getAllDish();
@@ -96,9 +94,9 @@ void MainWindow::on_btn_addDish_clicked()
 void MainWindow::updateTable()
 {
     ui->tableWidget->clear();
-    ui->tableWidget->setColumnCount(6);
+    ui->tableWidget->setColumnCount(5);
     QStringList l;
-    l<<"菜品编号"<<"菜品名称"<<"类别"<<"原材料"<<"价格"<<"折扣";
+    l<<"菜名"<<"价格"<<"折扣"<<"原料"<<"类型";
     ui->tableWidget->setHorizontalHeaderLabels(l);
 
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
@@ -107,12 +105,11 @@ void MainWindow::updateTable()
     QList<dishInfo> ldishes = m_ptrmenusql->getAllDish();
     ui ->tableWidget ->setRowCount(ldishes.size());
     for(int i = 0;i<ldishes.size();i++){
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(QString::number(ldishes[i].id )));
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(ldishes[i].name ));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(ldishes[i].type ));
+        ui->tableWidget->setItem(i,0,new QTableWidgetItem(ldishes[i].name));
+        ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(ldishes[i].discount)));
         ui->tableWidget->setItem(i,3,new QTableWidgetItem(ldishes[i].material ));
-        ui->tableWidget->setItem(i,4,new QTableWidgetItem(QString::number(ldishes[i].price )));
-        ui->tableWidget->setItem(i,5,new QTableWidgetItem(QString::number(ldishes[i].discount )));
+        ui->tableWidget->setItem(i,4,new QTableWidgetItem(ldishes[i].type));
     }
 }
 
@@ -198,7 +195,7 @@ void MainWindow::on_btn_updDish_clicked()
     dishInfo info;
     int i = ui->tableWidget->currentRow();
     if(i>=0){
-        info.id = ui->tableWidget->item(i,0)->text().toUInt();
+        //info.id = ui->tableWidget->item(i,0)->text().toUInt();
         info.name = ui->tableWidget->item(i,1)->text();
         info.type = ui->tableWidget->item(i,2)->text();
         info.material = ui->tableWidget->item(i,3)->text();
@@ -285,7 +282,7 @@ void MainWindow::on_btn_search_clicked()
     ui->tableWidget->clear();
     ui->tableWidget->setColumnCount(5);
     QStringList l;
-    l<<"菜品编号"<<"菜品名称"<<"类别"<<"原材料"<<"价格";
+    l<<"菜名"<<"价格"<<"折扣"<<"原料"<<"类型";
     ui->tableWidget->setHorizontalHeaderLabels(l);
 
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
@@ -300,11 +297,11 @@ void MainWindow::on_btn_search_clicked()
         if(!ldishes[i].name.contains(strFiter)){
             continue;
         }
-        ui->tableWidget->setItem(index,0,new QTableWidgetItem(QString::number(ldishes[i].id )));
-        ui->tableWidget->setItem(index,1,new QTableWidgetItem(ldishes[i].name ));
-        ui->tableWidget->setItem(index,2,new QTableWidgetItem(ldishes[i].type ));
-        ui->tableWidget->setItem(index,3,new QTableWidgetItem(ldishes[i].material ));
-        ui->tableWidget->setItem(index,4,new QTableWidgetItem(QString::number(ldishes[i].price )));
+        ui->tableWidget->setItem(i,0,new QTableWidgetItem(ldishes[i].name));
+        ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(ldishes[i].discount)));
+        ui->tableWidget->setItem(i,3,new QTableWidgetItem(ldishes[i].material ));
+        ui->tableWidget->setItem(i,4,new QTableWidgetItem(ldishes[i].type));
         index++;
     }
 }
