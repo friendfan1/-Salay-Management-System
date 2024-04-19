@@ -25,6 +25,7 @@ void Page_Login::on_btn_login_clicked()
     info.account = ui->le_userID->text();
     info.password = ui->le_password->text();
     //数据库查找用户名和密码
+
     QSqlQuery query;
     QString strSql = QString("select * from 账户 where 账号 = '%1' and 密码 = '%2'").
             arg(info.account).
@@ -34,15 +35,27 @@ void Page_Login::on_btn_login_clicked()
         qDebug()<<query.lastError().text();
         return;
     }
-
     //成功进入主界面
     if(query.next()){
         emit sendLoginSuccess(); //进入主界面并发一个消息
         this->hide(); //隐藏登录界面
     }
     else{
-         QMessageBox::information(nullptr,"信息","账号或密码错误");
+        QMessageBox::information(nullptr,"信息","账号或密码错误");
     }
+
+
+    // QSqlQuery query;
+    // QString strSql = QString("select * from user where account = '%1' and password = '%2'").
+    //         arg(info.account).
+    //         arg(info.password);
+    // //失败则提示
+    // if(!query.exec(strSql)){
+    //     qDebug()<<query.exec(strSql);
+    //     return;
+    // }
+
+
 
 
 }
