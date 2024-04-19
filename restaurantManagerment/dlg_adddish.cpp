@@ -18,7 +18,6 @@ void Dlg_addDish::setType(bool isAdd,dishInfo info)
 {
     m_isAdd = isAdd;
     m_info = info;
-    ui->le_id->setText(QString::number(info.id));
     ui->le_name->setText(info.name);
     ui->le_type->setText(info.type);
     ui->le_mat->setText(info.material);
@@ -30,7 +29,6 @@ void Dlg_addDish::on_pushButton_clicked()
 {
     dishInfo info;
     auto ptr = menusql::getinstance();
-    info.id = ui->le_id->text().toUInt();
     info.name = ui->le_name->text();
     info.type = ui->le_type->text();
     info.material = ui->le_mat->text();
@@ -40,7 +38,7 @@ void Dlg_addDish::on_pushButton_clicked()
         ptr->addDish(info);
     }
     else{
-        ptr ->updateDish(info);
+        ptr ->updateDish(info,m_info.name);
     }
     QMessageBox::information(nullptr,"信息","存储成功");
     this->hide(); //隐藏添加菜品界面

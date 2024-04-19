@@ -9,7 +9,6 @@ dlg_seat::dlg_seat(QString& _cno,QWidget *parent) :
     ui->setupUi(this);
     m_ptrmenusq = menusql::getinstance();
     num_selectedTable=-1;
-    m_ptrmenusq->init();
     updateTable();
 }
 

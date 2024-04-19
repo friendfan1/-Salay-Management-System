@@ -35,7 +35,7 @@ void dlg_addTable::on_btn_save_clicked()
         ptr->addTable(info);
     }
     else{
-        ptr ->updateTable(info);
+        ptr ->updateTable(info,m_info.id);
     }
 
     QMessageBox::information(nullptr,"信息","存储成功");

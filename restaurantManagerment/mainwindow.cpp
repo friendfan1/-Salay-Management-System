@@ -4,7 +4,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    ,m_ptrmenusql(nullptr)
 {
     ui->setupUi(this);
     m_dlgLogin.show(); //阻塞一下
@@ -54,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->treeWidget->expandAll(); //默认展开目录
 
     m_ptrmenusql = menusql::getinstance();
-    m_ptrmenusql->init();
 
 //    //显示表格内容
 //    QList<dishInfo> ldishes = m_ptrmenusql->getAllDish();
@@ -69,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
     updateTable();
     updateTable2();
     updateTable_order();
+    updateTable_cashier();
     ui->stackedWidget->setCurrentIndex(4);
 }
 
@@ -95,9 +94,9 @@ void MainWindow::on_btn_addDish_clicked()
 void MainWindow::updateTable()
 {
     ui->tableWidget->clear();
-    ui->tableWidget->setColumnCount(6);
+    ui->tableWidget->setColumnCount(5);
     QStringList l;
-    l<<"菜品编号"<<"菜品名称"<<"类别"<<"原材料"<<"价格"<<"折扣";
+    l<<"菜名"<<"价格"<<"折扣"<<"原料"<<"类型";
     ui->tableWidget->setHorizontalHeaderLabels(l);
 
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
@@ -106,12 +105,11 @@ void MainWindow::updateTable()
     QList<dishInfo> ldishes = m_ptrmenusql->getAllDish();
     ui ->tableWidget ->setRowCount(ldishes.size());
     for(int i = 0;i<ldishes.size();i++){
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(QString::number(ldishes[i].id )));
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(ldishes[i].name ));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(ldishes[i].type ));
+        ui->tableWidget->setItem(i,0,new QTableWidgetItem(ldishes[i].name));
+        ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(ldishes[i].discount)));
         ui->tableWidget->setItem(i,3,new QTableWidgetItem(ldishes[i].material ));
-        ui->tableWidget->setItem(i,4,new QTableWidgetItem(QString::number(ldishes[i].price )));
-        ui->tableWidget->setItem(i,5,new QTableWidgetItem(QString::number(ldishes[i].discount )));
+        ui->tableWidget->setItem(i,4,new QTableWidgetItem(ldishes[i].type));
     }
 }
 
@@ -147,34 +145,32 @@ void MainWindow::updateTable_order(){
     ui->tableWidget_3->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
     ui->tableWidget_3->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //显示表格内容
-    QList<orderInfo> ltables = m_ptrmenusql->getAllOrders();
-    ui ->tableWidget_3 ->setRowCount(ltables.size());
-    for(int i = 0;i<ltables.size();i++){
-        ui->tableWidget_3->setItem(i,0,new QTableWidgetItem(ltables[i].tableid ));
-        ui->tableWidget_3->setItem(i,1,new QTableWidgetItem(ltables[i].dishname));
-        ui->tableWidget_3->setItem(i,2,new QTableWidgetItem(ltables[i].time ));
-        ui->tableWidget_3->setItem(i,3,new QTableWidgetItem(ltables[i].orderid ));
+    QList<orderInfo> lorders = m_ptrmenusql->getAllOrders();
+    ui ->tableWidget_3 ->setRowCount(lorders.size());
+    for(int i = 0;i<lorders.size();i++){
+        ui->tableWidget_3->setItem(i,0,new QTableWidgetItem(lorders[i].tableid ));
+        ui->tableWidget_3->setItem(i,1,new QTableWidgetItem(lorders[i].dishname));
+        ui->tableWidget_3->setItem(i,2,new QTableWidgetItem(lorders[i].time ));
+        ui->tableWidget_3->setItem(i,3,new QTableWidgetItem(lorders[i].orderid ));
     }
 }
 
-//TODO
 void MainWindow::updateTable_cashier(){
     ui->tableWidget_4->clear();
-    ui->tableWidget_4->setColumnCount(4);
+    ui->tableWidget_4->setColumnCount(3);
     QStringList l;
-    l<<"餐桌序号"<<"菜名"<<"下单时间"<<"点菜编号";
+    l<<"餐桌序号"<<"餐桌容量"<<"餐桌状态";
     ui->tableWidget_4->setHorizontalHeaderLabels(l);
 
     ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
     ui->tableWidget_4->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //显示表格内容
-    QList<orderInfo> ltables = m_ptrmenusql->getAllOrders();
+    QList<tableInfo> ltables = m_ptrmenusql->getAllUsedTables();
     ui ->tableWidget_4 ->setRowCount(ltables.size());
     for(int i = 0;i<ltables.size();i++){
-        ui->tableWidget_4->setItem(i,0,new QTableWidgetItem(ltables[i].tableid ));
-        ui->tableWidget_4->setItem(i,1,new QTableWidgetItem(ltables[i].dishname));
-        ui->tableWidget_4->setItem(i,2,new QTableWidgetItem(ltables[i].time ));
-        ui->tableWidget_4->setItem(i,3,new QTableWidgetItem(ltables[i].orderid ));
+        ui->tableWidget_4->setItem(i,0,new QTableWidgetItem(ltables[i].id ));
+        ui->tableWidget_4->setItem(i,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
+        ui->tableWidget_4->setItem(i,2,new QTableWidgetItem(ltables[i].status ));
     }
 }
 
@@ -185,9 +181,9 @@ void MainWindow::on_btn_delDish_clicked()
     qDebug()<<i;
     if(i >= 0){
         //int id = ui->tableWidget->item(i,1)->text().toUInt(); //有问题 无法正常获取id
-        int id=i+1;
-        qDebug()<<id;
-        m_ptrmenusql->delDish(id); //直接用行号代替了id  要求id务必和行号相同
+        QString name=ui->tableWidget->item(i,0)->text();
+        qDebug()<<name;
+        m_ptrmenusql->delDish(name); //直接用行号代替了id  要求id务必和行号相同
         updateTable();
         QMessageBox::information(nullptr,"信息","删除成功");
     }
@@ -199,11 +195,11 @@ void MainWindow::on_btn_updDish_clicked()
     dishInfo info;
     int i = ui->tableWidget->currentRow();
     if(i>=0){
-        info.id = ui->tableWidget->item(i,0)->text().toUInt();
-        info.name = ui->tableWidget->item(i,1)->text();
-        info.type = ui->tableWidget->item(i,2)->text();
+        info.name = ui->tableWidget->item(i,0)->text();
+        info.type = ui->tableWidget->item(i,4)->text();
         info.material = ui->tableWidget->item(i,3)->text();
-        info.price = ui->tableWidget->item(i,4)->text().toUInt();
+        info.price = ui->tableWidget->item(i,1)->text().toFloat();
+        info.discount=ui->tableWidget->item(i,2)->text().toFloat();
         m_dlgAdddish.setType(false,info);
         m_dlgAdddish.exec();
         updateTable();
@@ -228,6 +224,11 @@ void MainWindow::on_btn_2_clicked()
 void MainWindow::on_btn_3_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
+}
+
+void MainWindow::on_btn_cashier_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 //增加餐桌
@@ -281,7 +282,7 @@ void MainWindow::on_btn_search_clicked()
     ui->tableWidget->clear();
     ui->tableWidget->setColumnCount(5);
     QStringList l;
-    l<<"菜品编号"<<"菜品名称"<<"类别"<<"原材料"<<"价格";
+    l<<"菜名"<<"价格"<<"折扣"<<"原料"<<"类型";
     ui->tableWidget->setHorizontalHeaderLabels(l);
 
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
@@ -296,13 +297,14 @@ void MainWindow::on_btn_search_clicked()
         if(!ldishes[i].name.contains(strFiter)){
             continue;
         }
-        ui->tableWidget->setItem(index,0,new QTableWidgetItem(QString::number(ldishes[i].id )));
-        ui->tableWidget->setItem(index,1,new QTableWidgetItem(ldishes[i].name ));
-        ui->tableWidget->setItem(index,2,new QTableWidgetItem(ldishes[i].type ));
+        ui->tableWidget->setItem(index,0,new QTableWidgetItem(ldishes[i].name));
+        ui->tableWidget->setItem(index,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
+        ui->tableWidget->setItem(index,2,new QTableWidgetItem(QString::number(ldishes[i].discount)));
         ui->tableWidget->setItem(index,3,new QTableWidgetItem(ldishes[i].material ));
-        ui->tableWidget->setItem(index,4,new QTableWidgetItem(QString::number(ldishes[i].price )));
+        ui->tableWidget->setItem(index,4,new QTableWidgetItem(ldishes[i].type));
         index++;
     }
+    for(int i=index;i<ldishes.size();++i)ui->tableWidget->removeRow(index);
 }
 
 
@@ -330,7 +332,7 @@ void MainWindow::on_btn_search2_clicked()
         ui->tableWidget_2->setItem(index,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
         ui->tableWidget_2->setItem(index,2,new QTableWidgetItem(ltables[i].status ));
         index++;
-    }
+    }for(int i=index;i<ltables.size();++i)ui ->tableWidget_2 ->removeRow(index);
 }
 
 
@@ -365,5 +367,18 @@ void MainWindow::on_btn_cancel_order_clicked()
 
         updateTable_order();
     }
+}
+
+
+
+void MainWindow::on_btn_menu_refresh_clicked()
+{
+    updateTable();
+}
+
+
+void MainWindow::on_btn_table_refresh_clicked()
+{
+    updateTable2();
 }
 

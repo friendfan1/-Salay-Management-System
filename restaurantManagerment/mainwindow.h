@@ -51,6 +51,12 @@ private slots:
 
     void on_btn_cancel_order_clicked();
 
+    void on_btn_cashier_clicked();
+
+    void on_btn_menu_refresh_clicked();
+
+    void on_btn_table_refresh_clicked();
+
 private:
     void updateTable();
     void updateTable2();

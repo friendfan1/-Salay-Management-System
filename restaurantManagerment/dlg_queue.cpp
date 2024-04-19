@@ -12,7 +12,6 @@ dlg_queue::dlg_queue(QWidget *parent) :
     ui->setupUi(this);
     //
     m_ptrmenusq = menusql::getinstance();
-    m_ptrmenusq->init();
     updateTable1();
     updateTable2();
     updateTable3();

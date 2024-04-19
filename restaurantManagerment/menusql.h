@@ -4,12 +4,11 @@
 #include <QObject>
 #include<QSqlDatabase>
 struct dishInfo{
-    int id;
-    QString name;
-    QString type;
-    QString material;
-    float price;
-    float discount;
+    QString name;//菜名
+    float price;//价格
+    float discount;//折扣
+    QString material;//材料
+    QString type;//类型
 };
 struct userInfo{
     QString account;
@@ -46,22 +45,20 @@ public:
     static menusql *getinstance(){
         if(nullptr == ptrmenuSql){
             ptrmenuSql = new menusql;
+            ptrmenuSql->init();
         }
         return ptrmenuSql;
     }
-    explicit menusql(QObject *parent = nullptr);
-    //初始化数据库
-    void init();
 
     //菜品函数
-    //1.查看现有菜品信息
+    //1.查看现有菜品信息s
     QList<dishInfo> getAllDish();
     //2.增加研制的新菜品
     bool addDish(dishInfo info);
     //3.删除不方便供应旧菜品
-    bool delDish(int id);
+    bool delDish(QString name);
     //4.修改现有菜品信息
-    void updateDish(dishInfo info);
+    void updateDish(dishInfo info,QString _name);//NOW UPDATED
 
     //用户函数
     //用户注册（添加用户）
@@ -73,11 +70,17 @@ public:
     //2.增加餐桌
     bool addTable(tableInfo info);
     //3.修改餐桌
-    void updateTable(tableInfo info);
+    void updateTable(tableInfo info, QString id);
     //4.删除不方便供应旧菜品
      bool delTable(QString id);
     //5.获取空闲餐桌
     QList<tableInfo> getFreetable();
+
+    //获取当日所有订单
+    QList<orderInfo> getAllOrders();
+
+    //获取正在使用的餐桌
+    QList<tableInfo> getAllUsedTables();
 
     //获取二人桌排队数据
     QList<queInfo> getq1();
@@ -92,10 +95,12 @@ public:
     //删除排队记录
     bool delLine(QString qno);
 
-    QList<orderInfo> getAllOrders();
 
 signals:
 private:
+    //单例模式，构造函数私有化
+    void init();
+    explicit menusql(QObject *parent = nullptr);
     QSqlDatabase m_db;  //声明QSqlDatabase的成员变量
 };
 

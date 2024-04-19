@@ -1,6 +1,7 @@
 #include "menusql.h"
 #include<QMessageBox>
 #include<QSqlDatabase>
+#include<QSqlError>
 #include<QSqlQuery> //sql查询语句
 #include<QtDebug>
 #include<QCoreApplication> // 用于获取数据库文件路径
@@ -29,7 +30,7 @@ menusql::menusql(QObject *parent)
 //    updateDish(d);
 
     //查看现有菜品信息
-    auto l = getAllDish();
+    //auto l = getAllDish();
     //QSqlQuery q("", db);
     //q.exec("INSERT INTO menu VALUES (3, '土豆炖牛肉', '招牌', '土豆、牛肉、葱姜蒜等', 49)");
 
@@ -55,31 +56,41 @@ void menusql::init()
         qDebug()<<"No database drivers found";
 
     //连接数据库
-    m_db = QSqlDatabase::addDatabase("QSQLITE"); //建立连接
+    m_db = QSqlDatabase::addDatabase("QODBC"); //建立连接
+    m_db.setHostName("mycgck.mysql.database.azure.com");  //连接本地主机
+    m_db.setPort(3306);
+    m_db.setDatabaseName("my_restaurant");
+    m_db.setUserName("swjtuAdmin");
+    m_db.setPassword("77597759Abc");
+    bool ok =m_db.open();
+    if(ok)qDebug()<<"\n\nopen success!\n\n";
+    else qDebug()<<m_db.lastError().text();
+
+
 /*
     auto str = QCoreApplication::applicationDirPath()+"data.db"; //获取数据库文件路径
     qDebug()<<str; //输出
 */
-    m_db.setDatabaseName("../data.db");   //关联数据库
-    if(!m_db.open())                          //打开数据库
-        qDebug()<<"database open failed";
+    // m_db.setDatabaseName("../data.db");   //关联数据库
+    // if(!m_db.open())                          //打开数据库
+    //     qDebug()<<"database open failed";
 }
 
 //显示菜品信息 已测
+//NOW UPDATED
 QList<dishInfo> menusql::getAllDish()
 {
     QList<dishInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from menu");
+    sql.exec("select * from 菜品");
     //sql.exec("select * from dishes");
     dishInfo info;
     while(sql.next()){
-        info.id = sql.value(0).toUInt();
-        info.name = sql.value(1).toString();
-        info.type = sql.value(2).toString();
+        info.name = sql.value(0).toString();
+        info.price =  sql.value(1).toFloat();
+        info.discount = sql.value(2).toFloat();
         info.material = sql.value(3).toString();
-        info.price =  sql.value(4).toUInt();
-        info.discount = sql.value(5).toFloat();
+        info.type = sql.value(4).toString();
         l.push_back(info);
     }
     return l;
@@ -89,35 +100,42 @@ QList<dishInfo> menusql::getAllDish()
 bool menusql::addDish(dishInfo info)
 {
     QSqlQuery sql(m_db);
-    QString strSql = QString("insert into menu values(%1, '%2', '%3', '%4', %5, %6)").
-            arg(info.id).
+    QString strSql = QString("insert into 菜品 values('%1', %2, %3, '%4', '%5')").
             arg(info.name).
-            arg(info.type).
-            arg(info.material).
             arg(info.price).
-            arg(info.discount);
-    return sql.exec(strSql);
+            arg(info.discount).
+            arg(info.material).
+            arg(info.type);
+    if(!sql.exec(strSql)){
+        qDebug()<<sql.lastError().text();
+        return false;
+    }return true;
 }
 
 //删除不方便供应旧菜品 已测
-bool menusql::delDish(int id)
+bool menusql::delDish(QString name)
 {
     QSqlQuery sql(m_db);
-    return sql.exec(QString("delete from menu where id = %1 ").arg(id));
+    QString strSql=QString("delete from 菜品 where 菜名 = '%1' ").arg(name);
+    if(!sql.exec(strSql)){
+        qDebug()<<sql.lastError().text();
+        return false;
+    }return true;
 }
 
 //修改现有菜品信息 已测
-void menusql::updateDish(dishInfo info)
+//NOW UPDATED
+void menusql::updateDish(dishInfo info,QString _name)
 {
     QSqlQuery sql(m_db);
-    QString strSql = QString("update menu set name = '%1',type = '%2',material = '%3',price = %4,discount = %5 where id = %6").
-            arg(info.name).
-            arg(info.type).
-            arg(info.material).
-            arg(info.price).
-            arg(info.discount).
-            arg(info.id);
-    qDebug()<<sql.exec(strSql);
+    QString strSql = QString("update 菜品 set 菜名 = '%1',价格 = %2,折扣 = %3,材料 = '%4',类型 = '%5' where 菜名 = '%6'").
+                     arg(info.name).
+                     arg(info.price).
+                     arg(info.discount).
+                     arg(info.material).
+                     arg(info.type).
+                     arg(_name);
+    if(!sql.exec(strSql))qDebug()<<sql.lastError().text();
 }
 
 //添加用户 已测
@@ -136,7 +154,7 @@ QList<tableInfo> menusql::getAlltable()
 {
     QList<tableInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from tables");
+    sql.exec("select * from 餐桌");
     tableInfo info;
     while(sql.next()){
         info.id = sql.value(0).toString();
@@ -144,7 +162,7 @@ QList<tableInfo> menusql::getAlltable()
         info.status = sql.value(2).toString();
         l.push_back(info);
     }
-    //qDebug()<<sql.exec("select * from tables");
+    if(!sql.last())qDebug()<<sql.lastError().text();
     return l;
 }
 
@@ -152,37 +170,38 @@ QList<tableInfo> menusql::getAlltable()
 bool menusql::addTable(tableInfo info)
 {
     QSqlQuery sql(m_db);
-    QString strSql = QString("insert into tables values('%1',%2,'%3')").
+    QString strSql = QString("insert into 餐桌 values('%1',%2,'%3')").
             arg(info.id).
             arg(info.capacity).
             arg(info.status);
-    qDebug()<<sql.exec(strSql);
-    return sql.exec(strSql);
+    if(!sql.exec(strSql))qDebug()<<sql.lastError();
+    return sql.last();
 }
 
 //修改餐桌
-void menusql::updateTable(tableInfo info)
+void menusql::updateTable(tableInfo info,QString id)
 {
     QSqlQuery sql(m_db);
-    QString strSql = QString("update tables set capacity = '%1',status = '%2' where id = '%5'").
+    QString strSql = QString("update 餐桌 set 桌号 = '%1',容量 = %2 ,状态 = '%3' where 桌号 = '%4'").
+            arg(info.id).
             arg(info.capacity).
             arg(info.status).
-            arg(info.id);
-    qDebug()<<sql.exec(strSql);
+            arg(id);
+    if(!sql.exec(strSql))qDebug()<<sql.lastError();
 }
 
 //删除餐桌
 bool menusql::delTable(QString id)
 {
     QSqlQuery sql(m_db);
-    return sql.exec(QString("delete from tables where id = '%1' ").arg(id));
+    return sql.exec(QString("delete from 餐桌 where 桌号 = '%1' ").arg(id));
 }
 
 QList<tableInfo> menusql::getFreetable()
 {
     QList<tableInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from tables where status = '空闲'");
+    sql.exec("select * from 餐桌 where 状态 = '空闲'");
     tableInfo info;
     while(sql.next()){
         info.id = sql.value(0).toString();
@@ -296,4 +315,8 @@ bool menusql::delLine(QString qno)
 
 QList<orderInfo> menusql::getAllOrders(){
     return {{"测试桌号","测试菜名","测试时间","测试编号"}};
+}
+
+QList<tableInfo> menusql::getAllUsedTables(){
+    return {{"测试桌号",8,"使用中"}};
 }
