@@ -214,18 +214,21 @@ void MainWindow::on_btn_updDish_clicked()
 void MainWindow::on_btn_1_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
+    updateTable();
 }
 
 
 void MainWindow::on_btn_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
+    updateTable2();
 }
 
 
 void MainWindow::on_btn_3_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
+    updateTable_order();
 }
 
 void MainWindow::on_btn_cashier_clicked()
@@ -465,6 +468,8 @@ void MainWindow::on_btn_order_menu_clicked()
 void MainWindow::on_pushButton_5_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
+    update_ordermenu();
+    update_ordertable();
 }
 
 
