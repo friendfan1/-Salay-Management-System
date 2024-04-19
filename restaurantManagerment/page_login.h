@@ -21,7 +21,7 @@ private slots:
     void on_btn_exit_clicked();
     //void on_pushButton_clicked();
 
-    void on_btn_reg_clicked();
+    //void on_btn_reg_clicked();
 
 signals:
     void sendLoginSuccess();

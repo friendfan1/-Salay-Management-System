@@ -24,8 +24,10 @@ struct tableInfo{
 struct orderInfo{
     QString tableid;
     QString dishname;
+    QString date;
     QString time;
     QString orderid;
+    QString status;
 };
 
 struct queInfo{
@@ -75,9 +77,19 @@ public:
      bool delTable(QString id);
     //5.获取空闲餐桌
     QList<tableInfo> getFreetable();
+    //获取占用的餐桌
+    QList<tableInfo> getUsedTable();
 
     //获取当日所有订单
     QList<orderInfo> getAllOrders();
+    //获取历史订单
+    QList<orderInfo> getPreviousOrders();
+    //点菜
+    void newOrder(QString dishname,QString tableid);
+    //上菜
+    void serveOrder(QString orderid,QString date);
+    //取消点菜
+    void cancelOrder(QString orderid,QString date);
 
     //获取正在使用的餐桌
     QList<tableInfo> getAllUsedTables();

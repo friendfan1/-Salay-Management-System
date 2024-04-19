@@ -166,6 +166,21 @@ QList<tableInfo> menusql::getAlltable()
     return l;
 }
 
+QList<tableInfo> menusql::getUsedTable(){
+    QList<tableInfo> l;
+    QSqlQuery sql(m_db);
+    sql.exec("select * from 餐桌 where 状态='忙碌'");
+    tableInfo info;
+    while(sql.next()){
+        info.id = sql.value(0).toString();
+        info.capacity = sql.value(1).toUInt();
+        info.status = sql.value(2).toString();
+        l.push_back(info);
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return l;
+}
+
 //添加餐桌
 bool menusql::addTable(tableInfo info)
 {
@@ -314,7 +329,59 @@ bool menusql::delLine(QString qno)
 
 
 QList<orderInfo> menusql::getAllOrders(){
-    return {{"测试桌号","测试菜名","测试时间","测试编号"}};
+    QList<orderInfo> l;
+    QSqlQuery sql(m_db);
+    sql.exec("CALL 查看未上菜()");
+    orderInfo info;
+    while(sql.next()){
+        info.tableid = sql.value(0).toString();
+        info.dishname = sql.value(1).toString();
+        info.date = sql.value(2).toString();
+        info.time = sql.value(3).toString();
+        info.orderid = sql.value(4).toString();
+        info.status = sql.value(5).toString();
+        l.push_back(info);
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return l;
+}
+
+QList<orderInfo> menusql::getPreviousOrders(){
+    QList<orderInfo> l;
+    QSqlQuery sql(m_db);
+    sql.exec("CALL 查看已上菜()");
+    orderInfo info;
+    while(sql.next()){
+        info.tableid = sql.value(0).toString();
+        info.dishname = sql.value(1).toString();
+        info.date = sql.value(2).toString();
+        info.time = sql.value(3).toString();
+        info.orderid = sql.value(4).toString();
+        info.status = sql.value(5).toString();
+        l.push_back(info);
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return l;
+}
+
+void menusql::serveOrder(QString orderid,QString date){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 上菜(%1 , '%2')").arg(orderid).arg(date);
+    sql.exec(str);
+    if(!sql.last())qDebug()<<sql.lastError().text();
+}
+void menusql::cancelOrder(QString orderid,QString date){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 取消点餐(%1 , '%2')").arg(orderid).arg(date);
+    sql.exec(str);
+    if(!sql.last())qDebug()<<sql.lastError().text();
+}
+
+void menusql::newOrder(QString dishname,QString tableid){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 点菜('%1' , '%2')").arg(tableid).arg(dishname);
+    sql.exec(str);
+    if(!sql.last())qDebug()<<sql.lastError().text();
 }
 
 QList<tableInfo> menusql::getAllUsedTables(){

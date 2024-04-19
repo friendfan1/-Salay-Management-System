@@ -57,11 +57,22 @@ private slots:
 
     void on_btn_table_refresh_clicked();
 
+    void on_btn_previous_order_clicked();
+
+    void on_btn_order_menu_clicked();
+
+    void on_pushButton_5_clicked();
+
+    void on_btn_new_order_clicked();
+
 private:
     void updateTable();
     void updateTable2();
     void updateTable_order();
     void updateTable_cashier();
+
+    void update_ordermenu();
+    void update_ordertable();
 private:
     Ui::MainWindow *ui;
     Page_Login m_dlgLogin;

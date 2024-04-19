@@ -8,10 +8,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     m_dlgLogin.show(); //阻塞一下
     //this->hide(); //隐藏主界面
-    auto f = [&](){
-        this->show();
-    };
-    connect(&m_dlgLogin,&Page_Login::sendLoginSuccess,this,f);  //收到发送成功，自动跳到主界面
+    // auto f = [&](){
+    //     this->show();
+    // };
+    connect(&m_dlgLogin,&Page_Login::sendLoginSuccess,this,&MainWindow::show);  //收到发送成功，自动跳到主界面
 //    ui->treeWidget->clear(); //我
 //    ui->treeWidget->setColumnCount(1); //设置列数
 
@@ -137,9 +137,9 @@ void MainWindow::updateTable2()
 
 void MainWindow::updateTable_order(){
     ui->tableWidget_3->clear();
-    ui->tableWidget_3->setColumnCount(4);
+    ui->tableWidget_3->setColumnCount(6);
     QStringList l;
-    l<<"餐桌序号"<<"菜名"<<"下单时间"<<"点菜编号";
+    l<<"桌号"<<"菜名"<<"日期"<<"时间"<<"点菜编号"<<"状态";
     ui->tableWidget_3->setHorizontalHeaderLabels(l);
 
     ui->tableWidget_3->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
@@ -150,8 +150,10 @@ void MainWindow::updateTable_order(){
     for(int i = 0;i<lorders.size();i++){
         ui->tableWidget_3->setItem(i,0,new QTableWidgetItem(lorders[i].tableid ));
         ui->tableWidget_3->setItem(i,1,new QTableWidgetItem(lorders[i].dishname));
-        ui->tableWidget_3->setItem(i,2,new QTableWidgetItem(lorders[i].time ));
-        ui->tableWidget_3->setItem(i,3,new QTableWidgetItem(lorders[i].orderid ));
+        ui->tableWidget_3->setItem(i,2,new QTableWidgetItem(lorders[i].date ));
+        ui->tableWidget_3->setItem(i,3,new QTableWidgetItem(lorders[i].time ));
+        ui->tableWidget_3->setItem(i,4,new QTableWidgetItem(lorders[i].orderid ));
+        ui->tableWidget_3->setItem(i,5,new QTableWidgetItem(lorders[i].status ));
     }
 }
 
@@ -347,10 +349,12 @@ void MainWindow::on_btn_serve_dish_clicked()
     int row = ui->tableWidget_3->currentRow();
     qDebug()<<row;
     if(row >= 0){
-        QString orderid=ui->tableWidget_3->item(row,3)->text();
+        if(ui->tableWidget_3->item(row,5)->text()=="已上菜")return;
+        QString orderid=ui->tableWidget_3->item(row,4)->text();
+        QString date=ui->tableWidget_3->item(row,2)->text();
         qDebug()<<orderid;
-        //实现上菜逻辑
-
+        m_ptrmenusql->serveOrder(orderid,date);
+        QMessageBox::information(nullptr,"信息","上菜成功");
         updateTable_order();
     }
 }
@@ -361,10 +365,12 @@ void MainWindow::on_btn_cancel_order_clicked()
     int row = ui->tableWidget_3->currentRow();
     qDebug()<<row;
     if(row >= 0){
-        QString orderid=ui->tableWidget_3->item(row,3)->text();
+        if(ui->tableWidget_3->item(row,5)->text()=="已上菜")return;
+        QString orderid=ui->tableWidget_3->item(row,4)->text();
+        QString date=ui->tableWidget_3->item(row,2)->text();
         qDebug()<<orderid;
-        //实现取消点菜逻辑
-
+        m_ptrmenusql->cancelOrder(orderid,date);
+        QMessageBox::information(nullptr,"信息","取消成功");
         updateTable_order();
     }
 }
@@ -380,5 +386,100 @@ void MainWindow::on_btn_menu_refresh_clicked()
 void MainWindow::on_btn_table_refresh_clicked()
 {
     updateTable2();
+}
+
+
+void MainWindow::on_btn_previous_order_clicked()
+{
+    ui->tableWidget_3->clear();
+    ui->tableWidget_3->setColumnCount(6);
+    QStringList l;
+    l<<"桌号"<<"菜名"<<"日期"<<"时间"<<"点菜编号"<<"状态";
+    ui->tableWidget_3->setHorizontalHeaderLabels(l);
+
+    ui->tableWidget_3->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
+    ui->tableWidget_3->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //显示表格内容
+    QList<orderInfo> lorders = m_ptrmenusql->getPreviousOrders();
+    ui ->tableWidget_3 ->setRowCount(lorders.size());
+    for(int i = 0;i<lorders.size();i++){
+        ui->tableWidget_3->setItem(i,0,new QTableWidgetItem(lorders[i].tableid ));
+        ui->tableWidget_3->setItem(i,1,new QTableWidgetItem(lorders[i].dishname));
+        ui->tableWidget_3->setItem(i,2,new QTableWidgetItem(lorders[i].date ));
+        ui->tableWidget_3->setItem(i,3,new QTableWidgetItem(lorders[i].time ));
+        ui->tableWidget_3->setItem(i,4,new QTableWidgetItem(lorders[i].orderid ));
+        ui->tableWidget_3->setItem(i,5,new QTableWidgetItem(lorders[i].status ));
+    }
+}
+
+void MainWindow::update_ordermenu(){
+    ui->tableWidget_ordermenu->clear();
+    ui->tableWidget_ordermenu->setColumnCount(3);
+    QStringList l;
+    l<<"菜名"<<"价格"<<"类型";
+    ui->tableWidget_ordermenu->setHorizontalHeaderLabels(l);
+    ui->tableWidget_ordermenu->setColumnWidth(0, ui->tableWidget_ordermenu->width()/3);
+    ui->tableWidget_ordermenu->setColumnWidth(1, ui->tableWidget_ordermenu->width()/3);
+    ui->tableWidget_ordermenu->setColumnWidth(2, ui->tableWidget_ordermenu->width()/3-20);
+
+    ui->tableWidget_ordermenu->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
+    ui->tableWidget_ordermenu->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //显示表格内容
+    QList<dishInfo> ldishes = m_ptrmenusql->getAllDish();
+    ui ->tableWidget_ordermenu->setRowCount(ldishes.size());
+    for(int i = 0;i<ldishes.size();i++){
+        ui->tableWidget_ordermenu->setItem(i,0,new QTableWidgetItem(ldishes[i].name));
+        ui->tableWidget_ordermenu->setItem(i,1,new QTableWidgetItem(QString::number(ldishes[i].price)));
+        ui->tableWidget_ordermenu->setItem(i,2,new QTableWidgetItem(ldishes[i].type));
+    }
+}
+void MainWindow::update_ordertable(){
+    ui->tableWidget_order_table->clear();
+    ui->tableWidget_order_table->setColumnCount(3);
+    QStringList l;
+    l<<"桌号"<<"容量"<<"状态";
+    ui->tableWidget_order_table->setHorizontalHeaderLabels(l);
+    ui->tableWidget_order_table->setColumnWidth(0, ui->tableWidget_order_table->width()/3);
+    ui->tableWidget_order_table->setColumnWidth(1, ui->tableWidget_order_table->width()/3);
+    ui->tableWidget_order_table->setColumnWidth(2, ui->tableWidget_order_table->width()/3-20);
+
+    ui->tableWidget_order_table->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
+    ui->tableWidget_order_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //显示表格内容
+    QList<tableInfo> ltables = m_ptrmenusql->getUsedTable();
+    ui ->tableWidget_order_table->setRowCount(ltables.size());
+    for(int i = 0;i<ltables.size();i++){
+        ui->tableWidget_order_table->setItem(i,0,new QTableWidgetItem(ltables[i].id ));
+        ui->tableWidget_order_table->setItem(i,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
+        ui->tableWidget_order_table->setItem(i,2,new QTableWidgetItem(ltables[i].status ));
+    }
+}
+
+void MainWindow::on_btn_order_menu_clicked()
+{
+    update_ordermenu();
+    update_ordertable();
+}
+
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(5);
+}
+
+
+void MainWindow::on_btn_new_order_clicked()
+{
+    int row_dish = ui->tableWidget_ordermenu->currentRow();
+    int row_table = ui->tableWidget_order_table->currentRow();
+    if(row_dish>=0&&row_table>=0){
+        QString dishname=ui->tableWidget_ordermenu->item(row_dish,0)->text();
+        QString tableid=ui->tableWidget_order_table->item(row_table,0)->text();
+        auto reply = QMessageBox::question(
+            this, "点菜确认", QString("桌号%1 确定要点 %2 吗？").arg(tableid).arg(dishname), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+        if(reply!=QMessageBox::Yes)return;
+        m_ptrmenusql->newOrder(dishname,tableid);
+        QMessageBox::information(nullptr,"信息","点菜成功");
+    }
 }
 

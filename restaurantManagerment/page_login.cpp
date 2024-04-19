@@ -56,22 +56,22 @@ void Page_Login::on_btn_exit_clicked()
 
 
 
-void Page_Login::on_btn_reg_clicked()
-{
+//void Page_Login::on_btn_reg_clicked()
+// {
 
-    userInfo info;
-    auto ptr = menusql::getinstance();
-    info.account = ui->le_userID->text();
-    info.password = ui->le_password->text();
-    ptr->adduser(info);
+//     userInfo info;
+//     auto ptr = menusql::getinstance();
+//     info.account = ui->le_userID->text();
+//     info.password = ui->le_password->text();
+//     ptr->adduser(info);
 
-//    if(m_isAdd){
-//        ptr->addDish(info);
-//    }
-//    else{
-//        ptr ->updateDish(info);
-//    }
-    QMessageBox::information(nullptr,"注册","注册成功");
+// //    if(m_isAdd){
+// //        ptr->addDish(info);
+// //    }
+// //    else{
+// //        ptr ->updateDish(info);
+// //    }
+//     QMessageBox::information(nullptr,"注册","注册成功");
 
-}
+// }
 

@@ -12,9 +12,9 @@ dlg_queue::dlg_queue(QWidget *parent) :
     ui->setupUi(this);
     //
     m_ptrmenusq = menusql::getinstance();
-    updateTable1();
-    updateTable2();
-    updateTable3();
+    // updateTable1();
+    // updateTable2();
+    // updateTable3();
 
     ui->btn_seat->setEnabled(false);
 }
