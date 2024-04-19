@@ -23,24 +23,39 @@ void Page_Login::on_btn_login_clicked()
     info.account = ui->le_userID->text();
     info.password = ui->le_password->text();
     //数据库查找用户名和密码
-    QSqlQuery query;
-    QString strSql = QString("select * from user where account = '%1' and password = '%2'").
-            arg(info.account).
-            arg(info.password);
-    //失败则提示
-    if(!query.exec(strSql)){
-        qDebug()<<query.exec(strSql);
-        return;
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("mycgck.mysql.database.azure.com"); // Azure数据库主机名
+    db.setDatabaseName("餐馆信息管理系统"); // 数据库名
+    db.setUserName("swjtuAdmin"); // 用户名
+    db.setPassword("77597759Abc"); // 密码
+    db.setPort(3306); // 端口号，默认为3306
+
+    bool ok = db.open();
+    if (ok) {
+        qDebug() << "Database connected successfully with SSL.";
+    } else {
+        qDebug() << "Database connection failed with SSL:";
     }
 
-    //成功进入主界面
-    if(query.next()){
-        emit sendLoginSuccess(); //进入主界面并发一个消息
-        this->hide(); //隐藏登录界面
-    }
-    else{
-         QMessageBox::information(nullptr,"信息","账号或密码错误");
-    }
+    // QSqlQuery query;
+    // QString strSql = QString("select * from user where account = '%1' and password = '%2'").
+    //         arg(info.account).
+    //         arg(info.password);
+    // //失败则提示
+    // if(!query.exec(strSql)){
+    //     qDebug()<<query.exec(strSql);
+    //     return;
+    // }
+
+    // //成功进入主界面
+    // if(query.next()){
+    //     emit sendLoginSuccess(); //进入主界面并发一个消息
+    //     this->hide(); //隐藏登录界面
+    // }
+    // else{
+    //      QMessageBox::information(nullptr,"信息","账号或密码错误");
+    // }
 
 
 }
