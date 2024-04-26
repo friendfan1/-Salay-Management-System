@@ -31,11 +31,17 @@ private slots:
 
     void on_btn_seat_clicked();
 
-    void on_tableWidget_1_cellClicked(int row, int column);
+    // void on_tableWidget_1_cellClicked(int row, int column);
 
-    void on_tableWidget_2_cellClicked(int row, int column);
+    // void on_tableWidget_2_cellClicked(int row, int column);
 
-    void on_tableWidget_3_cellClicked(int row, int column);
+    // void on_tableWidget_3_cellClicked(int row, int column);
+
+    void on_btn_q1seat_clicked();
+
+    void on_btn_q2seat_clicked();
+
+    void on_btn_q3seat_clicked();
 
 private:
     Ui::dlg_queue *ui;

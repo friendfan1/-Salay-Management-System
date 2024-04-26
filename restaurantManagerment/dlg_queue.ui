@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>dlg_queue</class>
  <widget class="QDialog" name="dlg_queue">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -97,7 +100,7 @@
     </font>
    </property>
    <property name="text">
-    <string>大圆桌</string>
+    <string>8人圆桌</string>
    </property>
   </widget>
   <widget class="QWidget" name="widget" native="true">
@@ -134,11 +137,14 @@
     </property>
    </widget>
    <widget class="QPushButton" name="btn_seat">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>620</x>
       <y>20</y>
-      <width>101</width>
+      <width>111</width>
       <height>51</height>
      </rect>
     </property>
@@ -151,7 +157,7 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>入座</string>
+     <string>快速入座</string>
     </property>
    </widget>
   </widget>
@@ -224,6 +230,45 @@ background-color: rgb(35, 70, 104);</string>
    </property>
    <property name="text">
     <string>删除</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_q1seat">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>100</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>入座</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_q2seat">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>100</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>入座</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_q3seat">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>100</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>入座</string>
    </property>
   </widget>
  </widget>

@@ -14,6 +14,7 @@ class dlg_line : public QDialog
 public:
     explicit dlg_line(QWidget *parent = nullptr);
     ~dlg_line();
+    void refreshDlg();
 
 private slots:
     void on_btn_exit_clicked();

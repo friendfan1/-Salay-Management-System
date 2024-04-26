@@ -6,11 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_dlgLogin.show(); //阻塞一下
-    //this->hide(); //隐藏主界面
-    // auto f = [&](){
-    //     this->show();
-    // };
+    m_dlgLogin.show();
     connect(&m_dlgLogin,&Page_Login::sendLoginSuccess,this,&MainWindow::show);  //收到发送成功，自动跳到主界面
 //    ui->treeWidget->clear(); //我
 //    ui->treeWidget->setColumnCount(1); //设置列数
@@ -167,7 +163,7 @@ void MainWindow::updateTable_cashier(){
     ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
     ui->tableWidget_4->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //显示表格内容
-    QList<tableInfo> ltables = m_ptrmenusql->getAllUsedTables();
+    QList<tableInfo> ltables = m_ptrmenusql->getUsedTable();
     ui ->tableWidget_4 ->setRowCount(ltables.size());
     for(int i = 0;i<ltables.size();i++){
         ui->tableWidget_4->setItem(i,0,new QTableWidgetItem(ltables[i].id ));
@@ -234,6 +230,7 @@ void MainWindow::on_btn_3_clicked()
 void MainWindow::on_btn_cashier_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    updateTable_cashier();
 }
 
 //增加餐桌
@@ -264,19 +261,23 @@ void MainWindow::on_btn_delTable_clicked()
 {
     int i = ui->tableWidget_2->currentRow();
     qDebug()<<i;
-    if(i > 0){
+    if(i >= 0){
         QString id = ui->tableWidget_2->item(i,0)->text();
         //int id=i+1;
-        qDebug()<<id;
-        m_ptrmenusql->delTable(id); //直接用行号代替了id  要求id务必和行号相同
+        // qDebug()<<id;
+        bool ok=m_ptrmenusql->delTable(id); //直接用行号代替了id  要求id务必和行号相同
         updateTable2();
-        QMessageBox::information(nullptr,"信息","删除成功");
+        if(ok)QMessageBox::information(nullptr,"信息","删除成功");
+        else QMessageBox::warning(nullptr,"错误","删除失败");
     }
 }
 
 
 void MainWindow::on_btn_queue_clicked()
 {
+    m_dlgQueue.updateTable1();
+    m_dlgQueue.updateTable2();
+    m_dlgQueue.updateTable3();
     m_dlgQueue.exec();
 }
 
@@ -350,7 +351,7 @@ void MainWindow::on_btn_refresh_order_clicked()
 void MainWindow::on_btn_serve_dish_clicked()
 {
     int row = ui->tableWidget_3->currentRow();
-    qDebug()<<row;
+    // qDebug()<<row;
     if(row >= 0){
         if(ui->tableWidget_3->item(row,5)->text()=="已上菜")return;
         QString orderid=ui->tableWidget_3->item(row,4)->text();
@@ -366,7 +367,7 @@ void MainWindow::on_btn_serve_dish_clicked()
 void MainWindow::on_btn_cancel_order_clicked()
 {
     int row = ui->tableWidget_3->currentRow();
-    qDebug()<<row;
+    // qDebug()<<row;
     if(row >= 0){
         if(ui->tableWidget_3->item(row,5)->text()=="已上菜")return;
         QString orderid=ui->tableWidget_3->item(row,4)->text();
@@ -485,6 +486,33 @@ void MainWindow::on_btn_new_order_clicked()
         if(reply!=QMessageBox::Yes)return;
         m_ptrmenusql->newOrder(dishname,tableid);
         QMessageBox::information(nullptr,"信息","点菜成功");
+    }
+}
+
+
+void MainWindow::on_btn_refresh_cashier_clicked()
+{
+    updateTable_cashier();
+}
+
+
+void MainWindow::on_btn_checkout_clicked()
+{
+    int row = ui->tableWidget_4->currentRow();
+    // qDebug()<<row;
+    if(row >= 0){
+        QString tno=ui->tableWidget_4->item(row,0)->text();
+        m_dlgchekout.getBill(tno);
+        auto reply = m_dlgchekout.exec();
+        if(reply==QDialog::Accepted){
+            m_dlgpayment.setTotal(m_dlgchekout.total);
+            auto rep=m_dlgpayment.exec();
+            if(rep==QDialog::Accepted){
+                bool ok=m_ptrmenusql->checkout(tno,m_dlgpayment.method);
+                if(ok)QMessageBox::information(nullptr,"消息","结账成功!");
+            }
+        }
+        updateTable_cashier();
     }
 }
 

@@ -20,10 +20,22 @@ private slots:
 
     void on_btn_cancel_clicked();
 
+    void on_btn_table_free_clicked();
+
+    void on_btn_table_busy_clicked();
+
+    void on_btn_tablecap_2_clicked();
+
+    void on_btn_tablecap_4_clicked();
+
+    void on_btn_tablecap_8_clicked();
+
 private:
     Ui::dlg_addTable *ui;
     bool m_isAdd;  //修改
     tableInfo m_info; //修改
+    bool isbusy=false;
+    int cap=-1;
 };
 
 #endif // DLG_ADDTABLE_H

@@ -34,13 +34,15 @@ void Dlg_addDish::on_pushButton_clicked()
     info.material = ui->le_mat->text();
     info.price = ui->le_price->text().toUInt();
     info.discount = ui ->le_dis->text().toFloat();
+    bool ok=false;
     if(m_isAdd){
-        ptr->addDish(info);
+        ok=ptr->addDish(info);
     }
     else{
-        ptr ->updateDish(info,m_info.name);
+        ok=ptr ->updateDish(info,m_info.name);
     }
-    QMessageBox::information(nullptr,"信息","存储成功");
+    if(ok)QMessageBox::information(nullptr,"信息","存储成功");
+    else QMessageBox::warning(nullptr,"错误","存储失败");
     this->hide(); //隐藏添加菜品界面
 }
 
