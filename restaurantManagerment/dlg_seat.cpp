@@ -8,8 +8,7 @@ dlg_seat::dlg_seat(QString& _cno,QWidget *parent) :
 {
     ui->setupUi(this);
     m_ptrmenusq = menusql::getinstance();
-    num_selectedTable=-1;
-    updateTable();
+    //updateTable();
 }
 
 dlg_seat::~dlg_seat()
@@ -20,19 +19,23 @@ dlg_seat::~dlg_seat()
 void dlg_seat::updateTable()
 {
     ui->tableWidget->clear();
-    ui->tableWidget->setColumnCount(2);
+    ui->tableWidget->setColumnCount(3);
     QStringList l;
-    l<<"餐桌序号"<<"餐桌容量";
+    l<<"桌号"<<"容量"<<"状态";
     ui->tableWidget->setHorizontalHeaderLabels(l);
+    ui->tableWidget->setColumnWidth(0, ui->tableWidget->width()/3);
+    ui->tableWidget->setColumnWidth(1, ui->tableWidget->width()/3);
+    ui->tableWidget->setColumnWidth(2, ui->tableWidget->width()/3-20);
 
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //显示表格内容
-    QList<tableInfo> ltables = m_ptrmenusq->getFreetable();
+    QList<tableInfo> ltables = m_ptrmenusq->getFreeTable();
     ui ->tableWidget ->setRowCount(ltables.size());
     for(int i = 0;i<ltables.size();i++){
         ui->tableWidget->setItem(i,0,new QTableWidgetItem(ltables[i].id ));
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
+        ui->tableWidget->setItem(i,2,new QTableWidgetItem(ltables[i].status ));
     }
 }
 
@@ -41,18 +44,20 @@ void dlg_seat::on_btn_exit_clicked()
     this->hide();  //隐藏添加菜品界面
 }
 
-
-void dlg_seat::on_tableWidget_cellClicked(int row, int column)
-{
-    num_selectedTable=row;
-}
-
-
 void dlg_seat::on_btn_enter_clicked()
 {
-    qDebug()<<num_selectedTable;
-    qDebug()<<cno;
-    //这里写入座的逻辑
+    int r=ui->tableWidget->currentRow();
+    if(r>=0){
+        QString tno = ui->tableWidget->item(r,0)->text();
+        QString cap = ui->tableWidget->item(r,1)->text();
+        if(quickMode)m_ptrmenusq->quickTakeSeat(tno,cap);
+        else m_ptrmenusq->takeSeat(selectedCno,tno);
+        update_queue();
+        updateTable();
+
+    }else{
+        QMessageBox::warning(nullptr,"错误","请选择一个餐桌。");
+    }
 }
 
 

@@ -11,7 +11,9 @@ CONFIG += c++17
 SOURCES += \
     dlg_adddish.cpp \
     dlg_addtable.cpp \
+    dlg_checkout.cpp \
     dlg_line.cpp \
+    dlg_payment.cpp \
     dlg_queue.cpp \
     dlg_seat.cpp \
     main.cpp \
@@ -22,7 +24,9 @@ SOURCES += \
 HEADERS += \
     dlg_adddish.h \
     dlg_addtable.h \
+    dlg_checkout.h \
     dlg_line.h \
+    dlg_payment.h \
     dlg_queue.h \
     dlg_seat.h \
     mainwindow.h \
@@ -32,7 +36,9 @@ HEADERS += \
 FORMS += \
     dlg_adddish.ui \
     dlg_addtable.ui \
+    dlg_checkout.ui \
     dlg_line.ui \
+    dlg_payment.ui \
     dlg_queue.ui \
     dlg_seat.ui \
     mainwindow.ui \

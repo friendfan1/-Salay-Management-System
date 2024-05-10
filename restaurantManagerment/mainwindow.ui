@@ -34,7 +34,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page1">
      <widget class="QPushButton" name="btn_addDish">
@@ -296,6 +296,19 @@
        </rect>
       </property>
      </widget>
+     <widget class="QPushButton" name="btn_previous_order">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>0</y>
+        <width>92</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>上菜记录</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_4">
      <widget class="QPushButton" name="btn_checkout">
@@ -336,6 +349,54 @@
      </widget>
     </widget>
     <widget class="QWidget" name="page_empty"/>
+    <widget class="QWidget" name="page5">
+     <widget class="QTableWidget" name="tableWidget_ordermenu">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>351</width>
+        <height>401</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="tableWidget_order_table">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>50</y>
+        <width>281</width>
+        <height>401</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_new_order">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>10</y>
+        <width>92</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>点菜</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_order_menu">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>10</y>
+        <width>92</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>刷新</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -500,7 +561,7 @@ border-color: rgb(35, 70, 104);
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>点菜</string>
+     <string>上菜</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_5">
@@ -518,7 +579,7 @@ border-color: rgb(35, 70, 104);
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>排桌</string>
+     <string>点菜</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_queue">

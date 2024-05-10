@@ -125,7 +125,7 @@ bool menusql::delDish(QString name)
 
 //修改现有菜品信息 已测
 //NOW UPDATED
-void menusql::updateDish(dishInfo info,QString _name)
+bool menusql::updateDish(dishInfo info,QString _name)
 {
     QSqlQuery sql(m_db);
     QString strSql = QString("update 菜品 set 菜名 = '%1',价格 = %2,折扣 = %3,材料 = '%4',类型 = '%5' where 菜名 = '%6'").
@@ -135,14 +135,33 @@ void menusql::updateDish(dishInfo info,QString _name)
                      arg(info.material).
                      arg(info.type).
                      arg(_name);
-    if(!sql.exec(strSql))qDebug()<<sql.lastError().text();
+    if(!sql.exec(strSql)){
+        qDebug()<<sql.lastError().text();
+        return false;
+    }else return true;
+}
+
+
+QList<dishInfo> menusql::getOrderedDish(QString tno){
+    QSqlQuery sql(m_db);
+    bool ok=sql.exec(QString("CALL 查看已点菜('%1')").arg(tno));
+    QList<dishInfo> l;
+    dishInfo info;
+    while(sql.next()){
+        info.name = sql.value(0).toString();
+        info.price =  sql.value(1).toFloat();
+        info.discount = sql.value(2).toFloat();
+        l.push_back(info);
+    }
+    if(!ok)qDebug()<<sql.lastError().text();
+    return l;
 }
 
 //添加用户 已测
 bool menusql::adduser(userInfo info)
 {
     QSqlQuery sql(m_db);
-    QString strSql = QString("insert into user values('%1','%2')").
+    QString strSql = QString("insert into 账户 values('%1','%2')").
             arg(info.account).
             arg(info.password);
     qDebug()<<sql.exec(strSql);
@@ -166,6 +185,21 @@ QList<tableInfo> menusql::getAlltable()
     return l;
 }
 
+QList<tableInfo> menusql::getUsedTable(){
+    QList<tableInfo> l;
+    QSqlQuery sql(m_db);
+    sql.exec("select * from 餐桌 where 状态='忙碌'");
+    tableInfo info;
+    while(sql.next()){
+        info.id = sql.value(0).toString();
+        info.capacity = sql.value(1).toUInt();
+        info.status = sql.value(2).toString();
+        l.push_back(info);
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return l;
+}
+
 //添加餐桌
 bool menusql::addTable(tableInfo info)
 {
@@ -174,12 +208,15 @@ bool menusql::addTable(tableInfo info)
             arg(info.id).
             arg(info.capacity).
             arg(info.status);
-    if(!sql.exec(strSql))qDebug()<<sql.lastError();
-    return sql.last();
+    if(!sql.exec(strSql)){
+        qDebug()<<sql.lastError();
+        return false;
+    }
+    else return true;
 }
 
 //修改餐桌
-void menusql::updateTable(tableInfo info,QString id)
+bool menusql::updateTable(tableInfo info,QString id)
 {
     QSqlQuery sql(m_db);
     QString strSql = QString("update 餐桌 set 桌号 = '%1',容量 = %2 ,状态 = '%3' where 桌号 = '%4'").
@@ -187,7 +224,11 @@ void menusql::updateTable(tableInfo info,QString id)
             arg(info.capacity).
             arg(info.status).
             arg(id);
-    if(!sql.exec(strSql))qDebug()<<sql.lastError();
+    if(!sql.exec(strSql)){
+        qDebug()<<sql.lastError();
+        return false;
+    }
+    else return true;
 }
 
 //删除餐桌
@@ -197,11 +238,11 @@ bool menusql::delTable(QString id)
     return sql.exec(QString("delete from 餐桌 where 桌号 = '%1' ").arg(id));
 }
 
-QList<tableInfo> menusql::getFreetable()
+QList<tableInfo> menusql::getFreeTable()
 {
     QList<tableInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from 餐桌 where 状态 = '空闲'");
+    sql.exec("select * from 餐桌 where 状态 = '空闲' order by 容量 desc");
     tableInfo info;
     while(sql.next()){
         info.id = sql.value(0).toString();
@@ -209,7 +250,7 @@ QList<tableInfo> menusql::getFreetable()
         info.status = sql.value(2).toString();
         l.push_back(info);
     }
-    //qDebug()<<sql.exec("select * from tables");
+    if(!sql.last())qDebug()<<sql.lastError().text();
     return l;
 }
 
@@ -218,17 +259,15 @@ QList<queInfo> menusql::getq1()
 {
     QList<queInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from queues where qstate= '排队中' and qnum <= 2");
+    bool ok=sql.exec("select 编号,人数,排队时间 from 来客 where 入座时间 is null and 日期=curdate() and 座位数要求=2 order by 排队时间 asc");
     queInfo info;
     while(sql.next()){
         info.qno = sql.value(0).toString();
-        info.qcno = sql.value(1).toString();
-        info.qnum = sql.value(2).toUInt();
-        info.qstate = sql.value(3).toString();
-        info.qontime = sql.value(4).toString();
+        info.qnum = sql.value(1).toString();
+        info.qreachtime=sql.value(2).toString();
         l.push_back(info);
     }
-    qDebug()<<sql.exec("select * from queues where qstate= '排队中' and qnum <= 2");
+    if(!ok)qDebug()<<sql.lastError().text();
     return l;
 }
 
@@ -237,17 +276,15 @@ QList<queInfo> menusql::getq2()
 {
     QList<queInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from queues where qstate= '排队中' and qnum > 2 and qnum <=4");
+    bool ok=sql.exec("select 编号,人数,排队时间 from 来客 where 入座时间 is null and 日期=curdate() and 座位数要求=4 order by 排队时间 asc");
     queInfo info;
     while(sql.next()){
         info.qno = sql.value(0).toString();
-        info.qcno = sql.value(1).toString();
-        info.qnum = sql.value(2).toUInt();
-        info.qstate = sql.value(3).toString();
-        info.qontime = sql.value(4).toString();
+        info.qnum = sql.value(1).toString();
+        info.qreachtime=sql.value(2).toString();
         l.push_back(info);
     }
-    //qDebug()<<sql.exec("select * from queues where qstate= '排队中' and qnum <= 2");
+    if(!ok)qDebug()<<sql.lastError().text();
     return l;
 }
 
@@ -256,55 +293,35 @@ QList<queInfo> menusql::getq3()
 {
     QList<queInfo> l;
     QSqlQuery sql(m_db);
-    sql.exec("select * from queues where qstate= '排队中' and qnum > 4");
+    bool ok=sql.exec("select 编号,人数,排队时间 from 来客 where 入座时间 is null and 日期=curdate() and 座位数要求=8 order by 排队时间 asc");
     queInfo info;
     while(sql.next()){
         info.qno = sql.value(0).toString();
-        info.qcno = sql.value(1).toString();
-        info.qnum = sql.value(2).toUInt();
-        info.qstate = sql.value(3).toString();
-        info.qontime = sql.value(4).toString();
+        info.qnum = sql.value(1).toString();
+        info.qreachtime=sql.value(2).toString();
         l.push_back(info);
     }
-    //qDebug()<<sql.exec("select * from queues where qstate= '排队中' and qnum <= 2");
+    if(!ok)qDebug()<<sql.lastError().text();
     return l;
 }
 
 //增加排队数据 已测
-bool menusql::addLine(queInfo info)
+bool menusql::addLine(int num,int table_cap)
 {
     QSqlQuery sql(m_db);
-    QString strSql = QString("insert into queues values ('%1','%2',%3,'%4','%5','%6')").
-            arg(info.qno).
-            arg(info.qcno).
-            arg(info.qnum).
-            arg(info.qstate).
-            arg(info.qontime).
-            arg(info.qofftime);
-    qDebug()<<sql.exec(strSql);
-    return sql.exec(strSql);
-}
-
-//入座时修改排队信息修改餐桌状态
-void menusql::updateLine(tableInfo infot, queInfo infoq)
-{
-    QTime time = QTime::currentTime(); //获取系统时间
-    QSqlQuery sql(m_db);
-    QString strSql = QString("update queues set qstate = '已处理',qofftime = '%1' where qno = '%2'").
-            arg(time.toString("hh:mm:ss")).
-            arg(infoq.qno);
-    qDebug()<<sql.exec(strSql);
-
-    QString strSql2 = QString("update tables set status = '使用中' where id = '%1'").
-            arg(infot.id);
-    qDebug()<<sql.exec(strSql2);
+    QString strSql = QString("CALL 客人到来(%1,%2)").arg(num).arg(table_cap);
+    bool ok=sql.exec(strSql);
+    if(!ok)qDebug()<<sql.lastError().text();
+    return ok;
 }
 
 //删除排队记录
 bool menusql::delLine(QString qno)
 {
     QSqlQuery sql(m_db);
-    return sql.exec(QString("delete from queues where qno = '%1' ").arg(qno));
+    bool ok = sql.exec(QString("delete from 来客 where 编号 = '%1' and 日期=curdate()").arg(qno));
+    if(!ok)qDebug()<<sql.lastError().text();
+    return ok;
 }
 
 
@@ -314,9 +331,109 @@ bool menusql::delLine(QString qno)
 
 
 QList<orderInfo> menusql::getAllOrders(){
-    return {{"测试桌号","测试菜名","测试时间","测试编号"}};
+    QList<orderInfo> l;
+    QSqlQuery sql(m_db);
+    sql.exec("CALL 查看未上菜()");
+    orderInfo info;
+    while(sql.next()){
+        info.tableid = sql.value(0).toString();
+        info.dishname = sql.value(1).toString();
+        info.date = sql.value(2).toString();
+        info.time = sql.value(3).toString();
+        info.orderid = sql.value(4).toString();
+        info.status = sql.value(5).toString();
+        l.push_back(info);
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return l;
 }
 
-QList<tableInfo> menusql::getAllUsedTables(){
-    return {{"测试桌号",8,"使用中"}};
+QList<orderInfo> menusql::getPreviousOrders(){
+    QList<orderInfo> l;
+    QSqlQuery sql(m_db);
+    sql.exec("CALL 查看已上菜()");
+    orderInfo info;
+    while(sql.next()){
+        info.tableid = sql.value(0).toString();
+        info.dishname = sql.value(1).toString();
+        info.date = sql.value(2).toString();
+        info.time = sql.value(3).toString();
+        info.orderid = sql.value(4).toString();
+        info.status = sql.value(5).toString();
+        l.push_back(info);
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return l;
+}
+
+void menusql::serveOrder(QString orderid,QString date){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 上菜(%1 , '%2')").arg(orderid).arg(date);
+    sql.exec(str);
+    if(!sql.last())qDebug()<<sql.lastError().text();
+}
+void menusql::cancelOrder(QString orderid,QString date){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 取消点餐(%1 , '%2')").arg(orderid).arg(date);
+    sql.exec(str);
+    if(!sql.last())qDebug()<<sql.lastError().text();
+}
+
+void menusql::newOrder(QString dishname,QString tableid){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 点菜('%1' , '%2')").arg(tableid).arg(dishname);
+    sql.exec(str);
+    if(!sql.last())qDebug()<<sql.lastError().text();
+}
+
+
+QList<int> menusql::getAllTableType(){
+    QSqlQuery sql(m_db);
+    QString str="SELECT 容量 FROM 餐桌 GROUP BY 容量";
+    sql.exec(str);
+    QList<int> res{};
+    while(sql.next()){
+        res.append(sql.value(0).toInt());
+    }
+    if(!sql.last())qDebug()<<sql.lastError().text();
+    return res;
+}
+
+void menusql::quickTakeSeat(QString tno,QString cap){
+    QSqlQuery sql(m_db);
+    QString str=QString("select 编号 from 来客 where 日期=curdate() and 座位数要求=%1 and 入座时间 is null order by 排队时间 asc limit 1")
+                      .arg(cap);
+    if(!sql.exec(str))qDebug()<<sql.lastError().text();
+    QString cno;
+    if(sql.next()){
+        cno=sql.value(0).toString();
+        str=QString("CALL 客人上桌(%1,'%2')").arg(cno).arg(tno);
+        if(!sql.exec(str))qDebug()<<sql.lastError().text();
+        else QMessageBox::information(nullptr,"消息",QString("入座成功! 请%1号客人前往%2餐桌用餐!").arg(cno).arg(tno));
+    }else{
+        QMessageBox::warning(nullptr,"错误","此类型餐桌暂无正在排队的客人。");
+    }
+}
+
+void menusql::takeSeat(QString cno,QString tno){
+    bool ok;
+    if(cno.toInt(&ok)<0||!ok){
+        QMessageBox::warning(nullptr,"错误","请选择要入座的客人。");
+        return;
+    }
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 客人上桌(%1,'%2')").arg(cno).arg(tno);
+    if(!sql.exec(str))qDebug()<<sql.lastError().text();
+    else QMessageBox::information(nullptr,"消息",QString("入座成功! 请%1号客人前往%2餐桌用餐!").arg(cno).arg(tno));
+}
+
+bool menusql::checkout(QString tno,QString method){
+    QSqlQuery sql(m_db);
+    QString str=QString("CALL 结账('%1','%2')").arg(tno).arg(method);
+    bool ok=sql.exec(str);
+    if(!ok){
+        qDebug()<<sql.lastError().text();
+        return false;
+    }
+    else return true;
 }
