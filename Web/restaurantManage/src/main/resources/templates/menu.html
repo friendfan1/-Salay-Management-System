@@ -117,6 +117,23 @@
     .styled-table tbody tr:last-of-type {
       border-bottom: 2px solid #009879;
     }
+    .fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     @media (max-width: 600px) {
       .container {
@@ -226,6 +243,20 @@
     const encodedDishId = encodeURIComponent(dishId); // Encode the dish ID
     const url = `/${tableNum}/menu/${encodedDishId}`;
     window.location.href = url;
+  }
+</script>
+<!-- 悬浮球 -->
+<div class="fab" th:data-table-num="${tableNum}" onclick="openNewWindow(this)">
+  <i class="fas fa-plus"></i>
+</div>
+
+<script>
+  // 打开新窗口函数
+  function openNewWindow(fab) {
+    // 使用Thymeleaf的语法获取tableNum变量的值
+    let tableNum = fab.getAttribute('data-table-num');
+    // 打开新窗口并跳转到指定URL
+    window.open('/' + tableNum + '/menu/ordered', '_blank');
   }
 </script>
 </body>

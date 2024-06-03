@@ -5,11 +5,12 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "点菜记录")
 @Data
-public class DishOrder implements Serializable {
+public class DishOrder{
 
     @EmbeddedId
     private DishOrderId id;
@@ -24,7 +25,8 @@ public class DishOrder implements Serializable {
     private String tableId;
 
     @Column(name = "时间")
-    private Time guestComeTIme;
+    @Temporal(TemporalType.TIME)
+    private LocalTime orderTIme;
 
     @Column(name = "状态")
     private String state;

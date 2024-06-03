@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @Data
 @Embeddable
 public class GuestId implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "日期")
     @Temporal(TemporalType.DATE)
     private LocalDate guestComeDate;

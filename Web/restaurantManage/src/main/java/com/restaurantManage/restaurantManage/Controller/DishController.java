@@ -1,6 +1,8 @@
 package com.restaurantManage.restaurantManage.Controller;
 
 import com.restaurantManage.restaurantManage.DAO.Dish;
+import com.restaurantManage.restaurantManage.DAO.DishOrder;
+import com.restaurantManage.restaurantManage.dto.DishOrderDTO;
 import com.restaurantManage.restaurantManage.service.DishService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +51,14 @@ public class DishController {
         model.addAttribute("tableNum",tableNum);
         model.addAttribute("dish",dish);
         return "success";
+    }
+
+    @GetMapping("{tableNum}/menu/ordered")
+    public String orderedDishes(@PathVariable String tableNum, Model model){
+        List<DishOrderDTO> dishOrdered = dishService.findAllOrderByTableNum(tableNum);
+        model.addAttribute("tableNum",tableNum);
+        model.addAttribute("dishOrdered",dishOrdered);
+        return "ordered";
     }
 
     public static String encodeValue(String value) {

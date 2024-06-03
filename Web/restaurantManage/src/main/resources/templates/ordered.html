@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>已点菜品</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h2 th:text ="${tableNum}">已点菜品</h2>
+<!-- 如果dishOrdered为空，则显示一条消息 -->
+<th:block th:if="${#lists.isEmpty(dishOrdered)}">
+  <p>暂无点菜品。</p>
+</th:block>
+
+<!-- 如果dishOrdered不为空，则显示表格 -->
+<th:block th:if="${not #lists.isEmpty(dishOrdered)}">
+  <table>
+    <tr>
+      <th>菜名</th>
+      <th>价格</th>
+      <th>折扣</th>
+      <th>时间</th>
+      <th>状态</th>
+    </tr>
+    <!-- 循环遍历dishes列表 -->
+    <tr th:each="dish : ${dishOrdered}">
+      <td th:text="${dish.dishName}">菜名</td>
+      <td th:text="${dish.price}">价格</td>
+      <td th:text="${dish.discount}">折扣</td>
+      <td th:text="${dish.time}">时间</td>
+      <td th:text="${dish.state}">状态</td>
+    </tr>
+  </table>
+</th:block>
+</body>
+</html>
