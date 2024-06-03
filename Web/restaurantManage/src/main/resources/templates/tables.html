@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎选座位</title>
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      const buttons = document.querySelectorAll("button[data-table-id]");
+      buttons.forEach(button => {
+        button.addEventListener("click", function() {
+          const tableId = this.getAttribute("data-table-id");
+          const customerNumber = document.getElementById("customerNumber").innerText; // 获取顾客编号
+          window.location.href = '/selectTable/' + customerNumber + '&' + tableId; // 构造跳转地址
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+<div class="container">
+  <h1>请你选择桌子</h1>
+  <!-- 显示顾客编号 -->
+  <p>你的编号: <span id="customerNumber" th:text="${customerNumber}"></span></p>
+  <h2>所有桌子</h2>
+  <table class="styled-table">
+    <thead>
+    <tr>
+      <th>桌号</th>
+      <th>容量</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 遍历显示桌子信息 -->
+    <tr th:each="table : ${tables}">
+      <td th:text="${table.tableId}"></td>
+      <td th:text="${table.capacity}"></td>
+      <td th:text="${table.state}"></td>
+      <td>
+        <button th:if="${table.state == '空闲'}"
+                th:text="'入座'"
+                th:attr="data-table-id=${table.tableId}"
+                class="action-button">
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>欢迎排队</title>
+  <link rel="stylesheet" type="text/css" href="/css/queueStyles.css">
+  <script type="text/javascript">
+    function submitQueueForm() {
+      const guestCount = document.getElementById('guestCount').value;
+      const seatCount = document.getElementById('seatCount').value;
+      window.location.href = '/queue/' + guestCount + '&' + seatCount;
+    }
+  </script>
+</head>
+<body>
+<div class="container">
+  <h1>平凡餐馆排队</h1>
+  <form>
+    <div class="form-group">
+      <label for="guestCount">人数:</label>
+      <input type="number" id="guestCount" name="guestCount" min="1" max="8" required>
+    </div>
+    <div class="form-group">
+      <label for="seatCount">座位需求数:</label>
+      <input type="number" id="seatCount" name="seatCount" min="1" max="8" required>
+    </div>
+    <button type="button" class="action-button" onclick="submitQueueForm()">开始排队！</button>
+  </form>
+</div>
+</body>
+</html>

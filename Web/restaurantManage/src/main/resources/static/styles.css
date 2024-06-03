@@ -1,0 +1,124 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-title {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.main-content {
+    padding: 2rem;
+}
+
+.dishes-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dishes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: center;
+}
+
+.dish-titles,
+.dish-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.dish-titles {
+    font-weight: bold;
+}
+
+.dish-item:last-child {
+    border-bottom: none;
+}
+
+.dish-info {
+    grid-column: 1 / 2;
+}
+
+.dish-price {
+    grid-column: 2 / 3;
+    color: green;
+}
+
+.dish-discount {
+    grid-column: 3 / 4;
+    color: orange;
+}
+
+.dish-ingredients {
+    grid-column: 4 / 5;
+}
+
+.dish-type {
+    grid-column: 5 / 6;
+}
+
+.order-button {
+    grid-column: 6 / 7;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 600px) {
+    .dish-titles,
+    .dish-item {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+    }
+
+    .dish-title,
+    .order-button {
+        grid-column: 1 / -1;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+
+    .order-button {
+        width: auto;
+    }
+}

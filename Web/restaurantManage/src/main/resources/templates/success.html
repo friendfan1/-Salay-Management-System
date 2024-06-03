@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Order Success</title>
+  <style>
+    .container {
+      text-align: center;
+      margin-top: 100px;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>点菜成功!</h1>
+  <p>桌号: <span th:text="${tableNum}"></span></p>
+  <p>菜名: <span th:text="${dish}"></span></p>
+  <p>谢谢你光临平凡餐馆</p>
+
+  <!-- 继续点餐按钮 -->
+  <a th:href="@{'/' + ${tableNum} + '/menu'}" class="button">继续点菜</a>
+</div>
+</body>
+</html>
