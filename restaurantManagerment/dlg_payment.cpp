@@ -22,7 +22,7 @@ void dlg_payment::setTotal(float total){
     ui->btn_weixin->setStyleSheet("");
     ui->btn_alipay->setEnabled(true);
     ui->btn_alipay->setStyleSheet("");
-    ui->btn_ysf->setEnabled(true);
+    /*ui->btn_ysf->setEnabled(true);*/ui->btn_ysf->setEnabled(false);
     ui->btn_ysf->setStyleSheet("");
 }
 
@@ -35,8 +35,11 @@ void dlg_payment::on_btn_cash_clicked()
     ui->btn_weixin->setStyleSheet("");
     ui->btn_alipay->setEnabled(true);
     ui->btn_alipay->setStyleSheet("");
-    ui->btn_ysf->setEnabled(true);
+    /*ui->btn_ysf->setEnabled(true);*/ui->btn_ysf->setEnabled(false);
     ui->btn_ysf->setStyleSheet("");
+
+    QPixmap qr{};
+    ui->label_QRcode->setPixmap(qr);
 }
 
 
@@ -49,8 +52,11 @@ void dlg_payment::on_btn_weixin_clicked()
     ui->btn_cash->setStyleSheet("");
     ui->btn_alipay->setEnabled(true);
     ui->btn_alipay->setStyleSheet("");
-    ui->btn_ysf->setEnabled(true);
+    /*ui->btn_ysf->setEnabled(true);*/ui->btn_ysf->setEnabled(false);
     ui->btn_ysf->setStyleSheet("");
+
+    QPixmap qr{":/QR_weixin.jpg"};
+    ui->label_QRcode->setPixmap(qr.scaled(ui->label_QRcode->size(),Qt::KeepAspectRatio));
 }
 
 
@@ -63,8 +69,11 @@ void dlg_payment::on_btn_alipay_clicked()
     ui->btn_cash->setStyleSheet("");
     ui->btn_weixin->setEnabled(true);
     ui->btn_weixin->setStyleSheet("");
-    ui->btn_ysf->setEnabled(true);
+    /*ui->btn_ysf->setEnabled(true);*/ui->btn_ysf->setEnabled(false);
     ui->btn_ysf->setStyleSheet("");
+
+    QPixmap qr{":/QR_alipay.jpg"};
+    ui->label_QRcode->setPixmap(qr.scaled(ui->label_QRcode->size(),Qt::KeepAspectRatio));
 }
 
 
@@ -79,6 +88,9 @@ void dlg_payment::on_btn_ysf_clicked()
     ui->btn_weixin->setStyleSheet("");
     ui->btn_alipay->setEnabled(true);
     ui->btn_alipay->setStyleSheet("");
+
+    QPixmap qr{};
+    ui->label_QRcode->setPixmap(qr);
 }
 
 

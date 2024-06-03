@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>Logo.jpg</file>
         <file>user.jpg</file>
+        <file>QR_alipay.jpg</file>
+        <file>QR_weixin.jpg</file>
     </qresource>
 </RCC>

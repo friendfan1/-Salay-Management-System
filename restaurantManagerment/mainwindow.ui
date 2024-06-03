@@ -20,9 +20,145 @@
   <property name="toolTip">
    <string>这是餐厅信息管理系统</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* Main window background color with gradient */
+/* Common background widget style */
+
+/* Common background widget style */
+QWidget#centralwidget {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 245, 235, 1), stop:0.5 rgba(255, 255, 255, 1), stop:1 rgba(240, 245, 235, 1)); /* Gradient from light green to white to light green */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+
+/* General widget style */
+QWidget {
+    background-color: #FFFFFF; /* White */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+/* Tree widget style */
+QTreeWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #FFFFFF, stop:1 #F0F0F0); /* White to Very Light Grey Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+}
+
+/* Buttons common style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #E0E0E0, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    border-radius: 4px;
+    padding: 5px;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QPushButton:hover {
+    background-color: #D6D6D6; /* Slightly Darker Grey */
+}
+
+QPushButton:pressed {
+    background-color: #BFBFBF; /* Darker Grey */
+}
+
+/* Specific buttons adjustments */
+QPushButton#btn_exit {
+    background-color: #FF6B6B; /* Light Red */
+    border: 1px solid #FF9999; /* Light Red Border */
+}
+
+QPushButton#btn_exit:hover {
+    background-color: #FF5252; /* Darker Red */
+}
+
+QPushButton#btn_exit:pressed {
+    background-color: #FF3B3B; /* Even Darker Red */
+}
+
+QPushButton#btn_queue, QPushButton#btn_cashier {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #E0E0E0, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    border-radius: 4px;
+    padding: 5px;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QPushButton#btn_queue:hover, QPushButton#btn_cashier:hover {
+    background-color: #D6D6D6; /* Slightly Darker Grey */
+}
+
+QPushButton#btn_queue:pressed, QPushButton#btn_cashier:pressed {
+    background-color: #BFBFBF; /* Darker Grey */
+}
+
+/* Labels style */
+QLabel {
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QLabel#label {
+    font-size: 12pt;
+    font-family: &quot;Segoe UI Semibold&quot;, sans-serif;
+}
+
+/* Line edits style */
+QLineEdit {
+    background-color: #FFFFFF; /* White */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    border-radius: 4px;
+    padding: 4px;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+/* Table widgets style */
+QTableWidget {
+    background-color: #FFFFFF; /* White */
+    color: #333333; /* Dark Grey */
+    gridline-color: #CCCCCC; /* Light Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QHeaderView::section {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #E0E0E0, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    padding: 4px;
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    font-family: &quot;Segoe UI Semibold&quot;, sans-serif;
+}
+
+/* Menu bar and status bar style */
+QMenuBar {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #F7F7F7, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QStatusBar {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #F7F7F7, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">Qwidget#centralwidget{background-color: rgb(48, 95, 143)};</string>
+    <string notr="true"/>
    </property>
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
@@ -34,7 +170,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page1">
      <widget class="QPushButton" name="btn_addDish">
@@ -408,21 +544,45 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(48, 95, 143);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common background widget style */
+QWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 245, 235, 1), stop:0.5 rgba(255, 255, 255, 1), stop:1 rgba(240, 245, 235, 1)); /* Gradient from light green to white to light green */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+</string>
     </property>
     <widget class="QPushButton" name="btn_exit">
      <property name="geometry">
       <rect>
-       <x>720</x>
-       <y>20</y>
-       <width>71</width>
-       <height>21</height>
+       <x>710</x>
+       <y>10</y>
+       <width>81</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+      <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
      </property>
      <property name="text">
       <string>退出</string>
@@ -439,7 +599,8 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>11</pointsize>
+       <family>Segoe UI</family>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="text">
@@ -473,14 +634,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Microsoft YaHei UI</family>
+       <family>等线 Light</family>
        <pointsize>14</pointsize>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 14pt &quot;Microsoft YaHei UI&quot;;</string>
+      <string notr="true">font: 14pt &quot;等线 Light&quot;;
+background-color: transparent;</string>
      </property>
      <property name="text">
       <string>餐馆信息管理系统</string>
@@ -497,8 +659,7 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true"/>
     </property>
     <attribute name="headerVisible">
      <bool>false</bool>
@@ -519,10 +680,26 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-alternate-background-color: rgb(48, 95, 143);
-border-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>菜品管理</string>
@@ -538,9 +715,26 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-border-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>餐桌管理</string>
@@ -556,9 +750,26 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-border-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>上菜</string>
@@ -574,9 +785,26 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-border-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>点菜</string>
@@ -592,9 +820,26 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-border-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>排队</string>
@@ -610,9 +855,26 @@ color: rgb(255, 255, 255);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(35, 70, 104);
-border-color: rgb(35, 70, 104);
-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>收银</string>
@@ -625,7 +887,7 @@ color: rgb(255, 255, 255);</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>27</height>
     </rect>
    </property>
   </widget>
