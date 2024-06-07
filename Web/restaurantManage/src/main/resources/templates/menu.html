@@ -1,0 +1,263 @@
+<!--
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>菜品点餐界面</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="header">
+  <h1 class="header-title">菜品点餐界面</h1>
+</header>
+<main class="main-content">
+  <div id="dishes-container" class="dishes-container">
+    <ul class="dishes-list">
+      <thead>
+      <tr>
+        <th>菜名</th>
+        <th>价格</th>
+        <th>折扣</th>
+        <th>材料</th>
+        <th>类型</th>
+      </tr>
+      </thead>
+      &lt;!&ndash; 遍历显示菜品列表 &ndash;&gt;
+      <li th:each="dish : ${dishes}" class="dish-item">
+        <span class="dish-id" th:text="${dish.id}"></span>
+        <span class="dish-price" th:text="${dish.price}"></span>
+        <span class="dish-discount" th:text="${dish.discount}"></span>
+        <span class="dish-ingredients" th:text="${dish.ingredients}"></span>
+        <span class="dish-type" th:text="${dish.type}"></span>
+        <button class="order-button" th:id="'order-' + ${dish.id}"
+                th:data-dish-id="${dish.id}" th:data-table-num="${tableNum}"
+                onclick="orderDish(this)">点菜</button>
+      </li>
+    </ul>
+  </div>
+</main>
+<script>
+  console.log("Inline script loaded"); // 验证 inline script 是否加载
+  window.orderDish = function(button) {
+    console.log("Button clicked"); // This should appear when a button is clicked
+    const dishId = button.getAttribute('data-dish-id');
+    const tableNum = button.getAttribute('data-table-num');
+    const encodedDishId = encodeURIComponent(dishId); // Encode the dish ID
+    const url = `/${tableNum}/menu/${encodedDishId}`;
+    window.location.href = url;
+  }
+</script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .styled-table th,
+    .styled-table td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    .styled-table thead tr {
+      background-color: #009879;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .styled-table tbody tr {
+      border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+      border-bottom: 2px solid #009879;
+    }
+    .fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .styled-table thead {
+        display: none;
+      }
+
+      .styled-table,
+      .styled-table tbody,
+      .styled-table tr,
+      .styled-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .styled-table tr {
+        margin-bottom: 1rem;
+      }
+
+      .styled-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+
+      .styled-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-weight: bold;
+        text-align: left;
+      }
+
+      .order-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .order-button:hover {
+        background-color: #45a049;
+      }
+
+      .order-button:active {
+        background-color: #398439;
+      }
+
+      .order-button {
+        width: 100%;
+      }
+
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>菜单</h1>
+  <table class="styled-table">
+    <thead>
+    <tr>
+      <th>菜名</th>
+      <th>价格</th>
+      <th>折扣</th>
+      <th>材料</th>
+      <th>类型</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dish : ${dishes}" class="dish-item">
+      <td class="dish-id" th:text="${dish.id}"></td>
+      <td class="dish-price" th:text="${dish.price}"></td>
+      <td class="dish-discount" th:text="${dish.discount}"></td>
+      <td class="dish-ingredients" th:text="${dish.ingredients}"></td>
+      <td class="dish-type" th:text="${dish.type}"></td>
+      <td><button class="order-button" th:id="'order-' + ${dish.id}"
+              th:data-dish-id="${dish.id}" th:data-table-num="${tableNum}"
+              onclick="orderDish(this)">点菜</button></td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  console.log("Inline script loaded"); // 验证 inline script 是否加载
+  window.orderDish = function(button) {
+    console.log("Button clicked"); // This should appear when a button is clicked
+    const dishId = button.getAttribute('data-dish-id');
+    const tableNum = button.getAttribute('data-table-num');
+    const encodedDishId = encodeURIComponent(dishId); // Encode the dish ID
+    const url = `/${tableNum}/menu/${encodedDishId}`;
+    window.location.href = url;
+  }
+</script>
+<!-- 悬浮球 -->
+<div class="fab" th:data-table-num="${tableNum}" onclick="openNewWindow(this)">
+  <i class="fas fa-plus"></i>
+</div>
+
+<script>
+  // 打开新窗口函数
+  function openNewWindow(fab) {
+    // 使用Thymeleaf的语法获取tableNum变量的值
+    let tableNum = fab.getAttribute('data-table-num');
+    // 打开新窗口并跳转到指定URL
+    window.open('/' + tableNum + '/menu/ordered', '_blank');
+  }
+</script>
+</body>
+</html>

@@ -16,6 +16,36 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* Common background widget style */
+QWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 245, 235, 1), stop:0.5 rgba(255, 255, 255, 1), stop:1 rgba(240, 245, 235, 1)); /* Gradient from light green to white to light green */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+/* Buttons common style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #E0E0E0, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    border-radius: 4px;
+    padding: 5px;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QPushButton:hover {
+    background-color: #D6D6D6; /* Slightly Darker Grey */
+}
+
+QPushButton:pressed {
+    background-color: #BFBFBF; /* Darker Grey */
+}
+
+</string>
+  </property>
   <widget class="QTableWidget" name="tableWidget_1">
    <property name="geometry">
     <rect>
@@ -26,7 +56,10 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-color: rgb(48, 95, 143);</string>
+    <string notr="true">    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #FFFFFF, stop:1 #F0F0F0); /* White to Very Light Grey Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+</string>
    </property>
    <attribute name="horizontalHeaderDefaultSectionSize">
     <number>60</number>
@@ -44,6 +77,12 @@
      <height>451</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #FFFFFF, stop:1 #F0F0F0); /* White to Very Light Grey Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+</string>
+   </property>
    <attribute name="horizontalHeaderDefaultSectionSize">
     <number>60</number>
    </attribute>
@@ -59,6 +98,12 @@
      <width>321</width>
      <height>451</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #FFFFFF, stop:1 #F0F0F0); /* White to Very Light Grey Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+</string>
    </property>
    <attribute name="horizontalHeaderDefaultSectionSize">
     <number>60</number>
@@ -78,8 +123,15 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+    background-color: transparent;
+}
+</string>
    </property>
    <property name="text">
     <string>4人桌</string>
@@ -96,8 +148,15 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+    background-color: transparent;
+}
+</string>
    </property>
    <property name="text">
     <string>8人圆桌</string>
@@ -113,7 +172,14 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(35, 70, 104);</string>
+    <string notr="true">/* Common background widget style */
+QWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 245, 235, 1), stop:0.5 rgba(255, 255, 255, 1), stop:1 rgba(240, 245, 235, 1)); /* Gradient from light green to white to light green */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+</string>
    </property>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
@@ -126,11 +192,32 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <family>Segoe UI</family>
+      <pointsize>10</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>排队</string>
@@ -150,11 +237,32 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>15</pointsize>
+      <family>Segoe UI</family>
+      <pointsize>10</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
+     <string notr="true">/* Common button style */
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(85, 170, 127, 1), stop:1 rgba(100, 190, 145, 1)); /* Gradient from primary to slightly lighter green */
+    color: #FFFFFF; /* White text for contrast */
+    border: 1px solid #5DAE89; /* Darker green border */
+    border-radius: 8px; /* Slightly more rounded corners */
+    padding: 6px 12px; /* Increased padding for a more comfortable touch target */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+QPushButton:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(100, 190, 145, 1), stop:1 rgba(85, 170, 127, 1)); /* Reverse gradient for hover effect */
+}
+
+QPushButton:pressed {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(70, 150, 110, 1), stop:1 rgba(85, 170, 127, 1)); /* Darker gradient for pressed effect */
+}
+</string>
     </property>
     <property name="text">
      <string>快速入座</string>
@@ -186,8 +294,15 @@ background-color: rgb(35, 70, 104);</string>
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+    background-color: transparent;
+}
+</string>
    </property>
    <property name="text">
     <string>2人桌</string>
@@ -197,9 +312,9 @@ background-color: rgb(35, 70, 104);</string>
    <property name="geometry">
     <rect>
      <x>1000</x>
-     <y>98</y>
+     <y>88</y>
      <width>61</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -210,9 +325,9 @@ background-color: rgb(35, 70, 104);</string>
    <property name="geometry">
     <rect>
      <x>650</x>
-     <y>100</y>
+     <y>90</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -223,9 +338,9 @@ background-color: rgb(35, 70, 104);</string>
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>100</y>
+     <y>90</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -236,9 +351,9 @@ background-color: rgb(35, 70, 104);</string>
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>100</y>
+     <y>90</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -249,9 +364,9 @@ background-color: rgb(35, 70, 104);</string>
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>100</y>
+     <y>90</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -262,9 +377,9 @@ background-color: rgb(35, 70, 104);</string>
    <property name="geometry">
     <rect>
      <x>740</x>
-     <y>100</y>
+     <y>90</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">

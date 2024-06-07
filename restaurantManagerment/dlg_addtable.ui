@@ -13,6 +13,52 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"> QDialog{   background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(240, 245, 235, 1), stop:0.5 rgba(255, 255, 255, 1), stop:1 rgba(240, 245, 235, 1)); /* Gradient from light green to white to light green */
+    color: #333333; /* Dark Grey */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+QTableWidget {
+    background-color: #FFFFFF; /* White */
+    color: #333333; /* Dark Grey */
+    gridline-color: #CCCCCC; /* Light Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+QLineEdit{
+background-color: #FFFFFF; /* White */
+    color: #333333; /* Dark Grey */
+    gridline-color: #CCCCCC; /* Light Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+/* Buttons common style */
+
+QPushButton {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #E0E0E0, stop:1 #FFFFFF); /* Light Grey to White Gradient */
+    color: #333333; /* Dark Grey */
+    border: 1px solid #CCCCCC; /* Light Grey Border */
+    border-radius: 4px;
+    padding: 5px;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 10pt;
+}
+
+QPushButton:hover {
+    background-color: #D6D6D6; /* Slightly Darker Grey */
+}
+
+QPushButton:pressed {
+    background-color: #BFBFBF; /* Darker Grey */
+}
+/* Common background widget style */
+
+</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
