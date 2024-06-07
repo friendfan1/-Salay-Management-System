@@ -1,0 +1,155 @@
+[33mcommit 3d9118d81ba3af07aac33904ab448188d04dea97[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 023feae adf2c55
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri May 10 15:14:49 2024 +0800
+
+    解决冲突、完成系统概要设计报告
+
+[33mcommit 023feae368d64f2bd15d00aaae49513be6a7ebdc[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri May 10 15:06:12 2024 +0800
+
+    完成系统概要设计说明书
+
+[33mcommit adf2c55f87f0995b72cfa94a958324bcaf032c56[m
+Author: dina365 <wangyiacg@163.com>
+Date:   Sat Apr 27 00:16:40 2024 +0800
+
+    实现目前所有功能，包括排队入座结账，更改了添加桌子的交互界面，更方便直观。重构了大量老接口，错误提示完善。
+    基本完善
+
+[33mcommit a3108906fca697fa4a9770d62afaaf07e7f4b891[m
+Author: dina365 <wangyiacg@163.com>
+Date:   Fri Apr 19 18:01:25 2024 +0800
+
+    自动刷新面板
+
+[33mcommit 74a5c7e638debaca713035d7ec8249ff03f212fb[m
+Merge: 07f0c15 cd48d6a
+Author: dina365 <wangyiacg@163.com>
+Date:   Fri Apr 19 17:53:55 2024 +0800
+
+    Merge branch 'main' of https://github.com/friendfan1/-Salay-Management-System
+    
+    # Conflicts:
+    #       restaurantManagerment/restaurantManagerment.pro.user
+
+[33mcommit 07f0c15e5cf3819f855c513a2e7162e9fdeb2905[m
+Author: dina365 <wangyiacg@163.com>
+Date:   Fri Apr 19 17:27:50 2024 +0800
+
+    实现上菜和点菜
+
+[33mcommit cd48d6a88e305bbdfcaec147fa8631fe21ef981f[m
+Author: linfengmuying <1297946569@qq.com>
+Date:   Fri Apr 19 15:59:54 2024 +0800
+
+    20240419 15:59
+
+[33mcommit 572f45349e6498f6ff61d04352458e49f96442a3[m
+Merge: e038846 59da75d
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Apr 19 14:09:46 2024 +0800
+
+    项目文档
+
+[33mcommit e0388461aea1c0c2c51a7028645cb52d9554bac4[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Apr 19 14:08:27 2024 +0800
+
+    项目文档
+
+[33mcommit 59da75d0ba258f52cfc308c99957e53ad349abd3[m
+Author: dina365 <wangyiacg@163.com>
+Date:   Sun Apr 7 17:09:50 2024 +0800
+
+    完善菜单的增删查改，完善餐桌的增删查改
+
+[33mcommit 32136b767cc7b8d687f82d7395e9ad7cc43f8acb[m
+Author: dina365 <wangyiacg@163.com>
+Date:   Sun Apr 7 15:39:02 2024 +0800
+
+    初步修改，数据库上云，显示菜单已修改
+
+[33mcommit d01ca1483b7b8c52976aa91c65be5807e9d0e46f[m
+Merge: 1520a1e 2971fbd
+Author: dina365 <wangyiacg@163.com>
+Date:   Fri Mar 29 16:45:50 2024 +0800
+
+    Merge branch 'main' of https://github.com/friendfan1/-Salay-Management-System
+    
+    # Conflicts:
+    #       README.md
+    #       data.db
+    #       restaurantManagerment/mainwindow.cpp
+    #       restaurantManagerment/mainwindow.h
+    #       restaurantManagerment/mainwindow.ui
+    #       restaurantManagerment/menusql.cpp
+    #       restaurantManagerment/menusql.h
+    #       restaurantManagerment/restaurantManagerment.pro.user
+
+[33mcommit 1520a1e0fdb19ee1d56bf0302b290828c45ecb18[m
+Author: dina365 <wangyiacg@163.com>
+Date:   Fri Mar 29 16:39:43 2024 +0800
+
+    local commit
+
+[33mcommit 2971fbd2e8425a2378715a49d417b6897503f1e9[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 29 16:16:11 2024 +0800
+
+    删除了构建目录
+
+[33mcommit e72e509daed40805ef9709204b27f25d57ddc274[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 29 16:14:32 2024 +0800
+
+    新增了ca证书
+
+[33mcommit 24df724edfa1931bdd97e596bbb33a2cecc0be0b[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 29 15:23:30 2024 +0800
+
+    数据库更新
+
+[33mcommit 56031a2f2a328213eb39e3429e9ed8c0bc9b9e82[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 29 14:41:59 2024 +0800
+
+    新增了代码
+
+[33mcommit ff92c9186de14ea204e1ed9d13619647b1ee6dbf[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 29 14:22:41 2024 +0800
+
+    增加了项目文档
+
+[33mcommit 84d12b3b7795c8408aa4c09146e62bb393026bfe[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Sat Mar 23 11:25:38 2024 +0800
+
+    完善了数据库功能
+
+[33mcommit ddb272c0e94823e9fb8d911f35e717b61939c19f[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 22 16:49:02 2024 +0800
+
+    设计报告
+
+[33mcommit acf7cb48c72c80254d811c75b0898aafe0d87dcb[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 22 16:05:20 2024 +0800
+
+    提交了数据库
+
+[33mcommit 4708b690ed207c09824730674b430f9b1f18edd4[m
+Author: 平凡 吴 <1911826283@qq.com>
+Date:   Fri Mar 8 15:18:46 2024 +0800
+
+    commit test
+
+[33mcommit 5a6acc0a09130bd15fc60c9a9616487c81078a5f[m
+Author: PINGFAN WU <109854344+friendfan1@users.noreply.github.com>
+Date:   Fri Mar 8 14:15:28 2024 +0800
+
+    Initial commit
