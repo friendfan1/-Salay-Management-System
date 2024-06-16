@@ -14,7 +14,7 @@ class dlg_seat : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlg_seat(QString& _cno,QWidget *parent = nullptr);
+    explicit dlg_seat(QWidget *parent = nullptr);
     ~dlg_seat();
     void updateTable();
     QString selectedCno="-1";
@@ -26,9 +26,8 @@ private slots:
     void on_btn_enter_clicked();
 
 private:
-    QString& cno;
     Ui::dlg_seat *ui;
-    menusql *m_ptrmenusq;
+    menusql *m_ptrmenusql;
 };
 
 #endif // DLG_SEAT_H

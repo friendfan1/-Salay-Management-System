@@ -4,5 +4,6 @@
         <file>user.jpg</file>
         <file>QR_alipay.jpg</file>
         <file>QR_weixin.jpg</file>
+        <file>swjtu.png</file>
     </qresource>
 </RCC>

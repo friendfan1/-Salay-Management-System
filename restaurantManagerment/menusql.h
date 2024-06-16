@@ -99,6 +99,10 @@ public:
     QList<queInfo> getq2();
     //获取圆桌排队数据
     QList<queInfo> getq3();
+
+    int getCapNeed(QString cno);
+    //获取客人需要的座位数
+
     //增加排队数据
     bool addLine(int num,int table_cap);
     //入座时修改排队信息修改餐桌状态
