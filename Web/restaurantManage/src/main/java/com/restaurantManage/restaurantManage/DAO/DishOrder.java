@@ -31,5 +31,51 @@ public class DishOrder{
     @Column(name = "状态")
     private String state;
 
+    public DishOrderId getId() {
+        return id;
+    }
 
+    public void setId(DishOrderId id) {
+        this.id = id;
+    }
+
+    public int getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(int guestId) {
+        this.guestId = guestId;
+    }
+
+    public String getDishName() {
+        return dishName;
+    }
+
+    public void setDishName(String dishName) {
+        this.dishName = dishName;
+    }
+
+    public String getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
+    }
+
+    public LocalTime getOrderTIme() {
+        return orderTIme;
+    }
+
+    public void setOrderTIme(LocalTime orderTIme) {
+        this.orderTIme = orderTIme;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 }

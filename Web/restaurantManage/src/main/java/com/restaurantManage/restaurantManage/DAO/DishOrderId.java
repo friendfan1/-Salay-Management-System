@@ -32,4 +32,6 @@ public class DishOrderId implements Serializable {
     public int hashCode() {
         return Objects.hash(guestComeDate, number);
     }
+
+
 }

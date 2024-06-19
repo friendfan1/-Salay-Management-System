@@ -22,17 +22,25 @@ public class theTableServiceImpl implements theTableService{
     }
 
     @Override
+    public List<theTable> getAllTableByCapacity(int capcacity) {
+        return thetablerepository.getTableByCapacity(capcacity);
+    }
+
+    @Override
     public theTable getTableById(String tableId) {
         return thetablerepository.findById(tableId).orElseThrow(RuntimeException::new);
     }
 
     @Override
-    public void updateTable(theTable table) {
-        thetablerepository.save(table);
+    public theTable updateTable(theTable table) {
+        return thetablerepository.save(table);
     }
 
     @Override
     public void selectTable(int guestNum, String tableId) {
+        if(guestNum < 1 || thetablerepository.findById(tableId).isEmpty()){
+            throw new IllegalArgumentException("wrong parameters");
+        }
         thetablerepository.guestToTable(guestNum,tableId);
     }
 
