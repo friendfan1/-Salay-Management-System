@@ -6,7 +6,7 @@
 dlg_queue::dlg_queue(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dlg_queue),
-    m_dlgSeat(selectedCustomer,this),
+    m_dlgSeat(this),
     selectedCustomer()
 {
     ui->setupUi(this);

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface DishService {
-    Dish GetDishByName(String id);
+//    Dish GetDishByName(String id);
 
     List<Dish> GetAllDishes();
 

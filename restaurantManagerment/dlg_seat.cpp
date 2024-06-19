@@ -1,13 +1,12 @@
 #include "dlg_seat.h"
 #include "ui_dlg_seat.h"
 
-dlg_seat::dlg_seat(QString& _cno,QWidget *parent) :
+dlg_seat::dlg_seat(QWidget *parent) :
     QDialog(parent),
-    cno(_cno),
     ui(new Ui::dlg_seat)
 {
     ui->setupUi(this);
-    m_ptrmenusq = menusql::getinstance();
+    m_ptrmenusql = menusql::getinstance();
     //updateTable();
 }
 
@@ -30,12 +29,19 @@ void dlg_seat::updateTable()
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows); // 只选中行
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     //显示表格内容
-    QList<tableInfo> ltables = m_ptrmenusq->getFreeTable();
+    QList<tableInfo> ltables = m_ptrmenusql->getFreeTable();
     ui ->tableWidget ->setRowCount(ltables.size());
-    for(int i = 0;i<ltables.size();i++){
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(ltables[i].id ));
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
-        ui->tableWidget->setItem(i,2,new QTableWidgetItem(ltables[i].status ));
+    int cap=0;
+    if(!quickMode)cap=m_ptrmenusql->getCapNeed(selectedCno);
+    for(int i = 0,index=0;i<ltables.size();i++){
+        if(!quickMode && ltables[i].capacity<cap){
+            ui->tableWidget->removeRow(ui->tableWidget->rowCount()-1);
+            continue;
+        }
+        ui->tableWidget->setItem(index,0,new QTableWidgetItem(ltables[i].id ));
+        ui->tableWidget->setItem(index,1,new QTableWidgetItem(QString::number(ltables[i].capacity)));
+        ui->tableWidget->setItem(index,2,new QTableWidgetItem(ltables[i].status ));
+        ++index;
     }
 }
 
@@ -50,10 +56,11 @@ void dlg_seat::on_btn_enter_clicked()
     if(r>=0){
         QString tno = ui->tableWidget->item(r,0)->text();
         QString cap = ui->tableWidget->item(r,1)->text();
-        if(quickMode)m_ptrmenusq->quickTakeSeat(tno,cap);
-        else m_ptrmenusq->takeSeat(selectedCno,tno);
+        if(quickMode)m_ptrmenusql->quickTakeSeat(tno,cap);
+        else m_ptrmenusql->takeSeat(selectedCno,tno);
         update_queue();
         updateTable();
+        if(!quickMode)this->hide();
 
     }else{
         QMessageBox::warning(nullptr,"错误","请选择一个餐桌。");

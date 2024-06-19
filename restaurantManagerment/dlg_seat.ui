@@ -20,12 +20,10 @@
     font-size: 10pt;
 }
 QTableWidget {
-    background-color: #FFFFFF; /* White */
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #FFFFFF, stop:1 #F0F0F0); /* White to Very Light Grey Gradient */
     color: #333333; /* Dark Grey */
-    gridline-color: #CCCCCC; /* Light Grey */
     border: 1px solid #CCCCCC; /* Light Grey Border */
-    font-family: &quot;Segoe UI&quot;, sans-serif;
-    font-size: 10pt;
+
 }
 QLineEdit{
 background-color: #FFFFFF; /* White */

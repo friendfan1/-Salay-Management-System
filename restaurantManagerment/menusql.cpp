@@ -437,3 +437,18 @@ bool menusql::checkout(QString tno,QString method){
     }
     else return true;
 }
+
+
+int menusql::getCapNeed(QString cno){
+    QSqlQuery sql(m_db);
+    QString str=QString("SELECT 座位数要求 FROM 来客 WHERE 编号=%1 AND 日期=CURDATE()").arg(cno);
+    bool ok=sql.exec(str);
+    if(!ok){
+        qDebug()<<sql.lastError().text();
+        return -1;
+    }
+    else {
+        sql.next();
+        return sql.value(0).toInt();
+    }
+}

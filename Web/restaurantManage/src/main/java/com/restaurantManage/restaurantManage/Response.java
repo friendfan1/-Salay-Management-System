@@ -42,4 +42,13 @@ public class Response <T>{
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
     }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "data=" + data +
+                ", success=" + success +
+                ", errMsg='" + errMsg + '\'' +
+                '}';
+    }
 }

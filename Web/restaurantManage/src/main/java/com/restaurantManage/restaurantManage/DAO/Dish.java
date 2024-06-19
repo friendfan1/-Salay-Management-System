@@ -24,6 +24,9 @@ public class Dish {
     @Column(name = "类型")
     private String type;
 
+    public Dish() {
+    }
+
     public String getId() {
         return Id;
     }

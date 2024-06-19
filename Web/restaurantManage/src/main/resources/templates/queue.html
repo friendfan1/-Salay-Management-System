@@ -1,30 +1,146 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-  <title>欢迎排队</title>
-  <link rel="stylesheet" type="text/css" href="/css/queueStyles.css">
-  <script type="text/javascript">
-    function submitQueueForm() {
-      const guestCount = document.getElementById('guestCount').value;
-      const seatCount = document.getElementById('seatCount').value;
-      window.location.href = '/queue/' + guestCount + '&' + seatCount;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-  </script>
+
+    #queueForm, #tables {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f8f9fa;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <h1>平凡餐馆排队</h1>
-  <form>
-    <div class="form-group">
-      <label for="guestCount">人数:</label>
-      <input type="number" id="guestCount" name="guestCount" min="1" max="8" required>
-    </div>
-    <div class="form-group">
-      <label for="seatCount">座位需求数:</label>
-      <input type="number" id="seatCount" name="seatCount" min="1" max="8" required>
-    </div>
-    <button type="button" class="action-button" onclick="submitQueueForm()">开始排队！</button>
+<div id="queueForm">
+  <h2>欢迎来到我们的餐馆</h2>
+  <form id="submitQueueForm">
+    <label for="capacity">座位需求</label>
+    <select id="capacity" name="capacity" required>
+      <option value="2">2</option>
+      <option value="4">4</option>
+      <option value="8">8</option>
+    </select>
+    <button type="submit">提交</button>
   </form>
 </div>
+
+<div id="tables" style="display:none;">
+  <h2>Available Tables</h2>
+  <ul id="tableList"></ul>
+</div>
+
+<script>
+  document.getElementById('submitQueueForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const capacity = document.getElementById('capacity').value;
+
+    fetch('/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ capacity: capacity })
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                window.location.href = data.data;
+              } else {
+                alert('Failed to join queue: ' + data.message);
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
+
+  function loadTables(customerNumber) {
+    fetch(`/${customerNumber}/tables`)
+            .then(response => response.text())
+            .then(html => {
+              document.getElementById('queueForm').style.display = 'none';
+              document.getElementById('tables').style.display = 'block';
+              document.getElementById('tableList').innerHTML = html;
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const cookies = document.cookie.split(';');
+    let customerNumber = null;
+
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'customerNumber') {
+        customerNumber = value;
+        break;
+      }
+    }
+
+    if (customerNumber) {
+      loadTables(customerNumber);
+    }
+  });
+</script>
 </body>
 </html>

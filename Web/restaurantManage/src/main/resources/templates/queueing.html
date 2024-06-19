@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Success</title>
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>正在排队</h1>
+    <p>桌号: <span th:text="${id}"></span></p>
+    <p>前面还有: <span th:text="${peopleQuantity}"></span>桌</p>
+    <p>谢谢你光临平凡餐馆</p>
+
+
+</div>
+</body>
+</html>
